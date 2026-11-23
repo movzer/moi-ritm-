@@ -1,0 +1,4227 @@
+```html
+<!DOCTYPE html>
+<html lang="ru" data-theme="powder" data-evening="false">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Мой ритм — Пастельный ежедневник</title>
+
+  <!-- Полноэкранный режим (PWA) и цвета системной строки телефона -->
+  <meta name="application-name" content="Мой ритм" />
+  <meta name="apple-mobile-web-app-title" content="Мой ритм" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" id="app-theme-color" content="#C6D8F0" />
+
+  <!-- Мгновенная базовая иконка + динамически обновляемые PNG-иконки и веб-манифест -->
+  <link rel="icon" id="app-favicon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23DCE8F8'/%3E%3Cstop offset='55%25' stop-color='%23C6D8F0'/%3E%3Cstop offset='100%25' stop-color='%23E5DDF0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' fill='url(%23g)'/%3E%3Crect x='34' y='34' width='444' height='444' rx='76' fill='none' stroke='rgba(255,255,255,0.78)' stroke-width='3'/%3E%3Ccircle cx='256' cy='256' r='168' fill='none' stroke='rgba(255,255,255,0.78)' stroke-width='2.5'/%3E%3Ctext x='256' y='278' text-anchor='middle' font-family='Georgia,serif' font-size='144' fill='%232A374B'%3E%D0%9C%D0%A0%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" id="app-touch-icon" sizes="512x512" />
+  <link rel="manifest" id="app-manifest" />
+
+  <!-- Google Fonts: Cormorant Garamond (высокая контрастная антиква с кириллицей) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       1. PANTONE PASTEL PALETTE & THEME TOKENS
+       ========================================================================== */
+    :root {
+      /* 9 официальных оттенков Pantone */
+      --p-delicate-blue: #C6D8F0;
+      --p-endless-sky: #7D94B5;
+      --p-endless-sky-dark: #637B9E;
+      --p-marys-rose: #F7D6DA;
+      --p-marys-rose-ink: #8E4E59;
+      --p-gossamer-green: #B5D3BE;
+      --p-gossamer-green-ink: #3E664B;
+      --p-pastel-yellow: #F2E9B1;
+      --p-pastel-yellow-ink: #7A6724;
+      --p-orchid-petal: #C5B7D1;
+      --p-orchid-petal-ink: #5B4A6E;
+      --p-heavenly-pink: #F3E1E5;
+      --p-cappucino-foam: #F4F3E8;
+      --p-hushed-violet: #D2C1C8;
+      --p-hushed-violet-ink: #6E5260;
+
+      /* Типографика и базовый контраст */
+      --font-main: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --ink-main: #263040;
+      --ink-muted: #556275;
+      --ink-faint: #7A8799;
+
+      /* Сферы */
+      --c-work: #7D94B5;
+      --c-work-soft: rgba(125, 148, 181, 0.16);
+      --c-personal: #F7D6DA;
+      --c-personal-ink: #8E4E59;
+      --c-personal-soft: rgba(247, 214, 218, 0.55);
+      --c-interests: #C5B7D1;
+      --c-interests-ink: #5B4A6E;
+      --c-interests-soft: rgba(197, 183, 209, 0.34);
+
+      /* Радиусы и тени */
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 8px 28px rgba(67, 86, 117, 0.07);
+      --shadow-hover: 0 12px 32px rgba(67, 86, 117, 0.11);
+      --shadow-modal: 0 22px 60px rgba(38, 48, 64, 0.18);
+    }
+
+    /* Тема 1 (по умолчанию): Пудровый голубой (Powder Blue) */
+    [data-theme="powder"] {
+      --bg-page: linear-gradient(155deg, #E8F0FA 0%, #D9E6F7 48%, #F4F3E8 100%);
+      --bg-solid: #E1ECFA;
+      --bg-sidebar: rgba(235, 243, 252, 0.9);
+      --bg-card: rgba(255, 255, 255, 0.88);
+      --bg-card-solid: #FFFFFF;
+      --bg-subtle: rgba(198, 216, 240, 0.34);
+      --bg-hover: rgba(198, 216, 240, 0.52);
+      --bg-input: #FFFFFF;
+      --border: rgba(125, 148, 181, 0.28);
+      --border-strong: rgba(125, 148, 181, 0.5);
+      --accent: #7D94B5;
+      --accent-hover: #657DA0;
+      --accent-soft: #C6D8F0;
+    }
+
+    /* Тема 2: Кремовая пена (Cappucino Foam) */
+    [data-theme="cream"] {
+      --bg-page: linear-gradient(155deg, #F8F7F0 0%, #F4F3E8 55%, #EBF2FB 100%);
+      --bg-solid: #F4F3E8;
+      --bg-sidebar: rgba(248, 247, 240, 0.94);
+      --bg-card: rgba(255, 255, 255, 0.92);
+      --bg-card-solid: #FFFFFF;
+      --bg-subtle: rgba(242, 233, 177, 0.32);
+      --bg-hover: rgba(198, 216, 240, 0.36);
+      --bg-input: #FFFEFA;
+      --border: rgba(125, 148, 181, 0.24);
+      --border-strong: rgba(125, 148, 181, 0.46);
+      --accent: #7D94B5;
+      --accent-hover: #657DA0;
+      --accent-soft: #F2E9B1;
+    }
+
+    /* Тема 3: Нежная лаванда (Orchid Petal) */
+    [data-theme="lavender"] {
+      --bg-page: linear-gradient(155deg, #F2EEF7 0%, #E9E2F2 50%, #F3E1E5 100%);
+      --bg-solid: #EDE7F4;
+      --bg-sidebar: rgba(243, 238, 249, 0.92);
+      --bg-card: rgba(255, 255, 255, 0.88);
+      --bg-card-solid: #FFFFFF;
+      --bg-subtle: rgba(197, 183, 209, 0.32);
+      --bg-hover: rgba(197, 183, 209, 0.48);
+      --bg-input: #FFFFFF;
+      --border: rgba(154, 134, 173, 0.28);
+      --border-strong: rgba(125, 148, 181, 0.5);
+      --accent: #7D94B5;
+      --accent-hover: #647BA0;
+      --accent-soft: #C5B7D1;
+    }
+
+    /* Вечерний режим: уютный лавандово-голубой тон */
+    [data-evening="true"] {
+      --bg-page: linear-gradient(155deg, #DFE3F2 0%, #DFD6EB 52%, #E8DCE4 100%);
+      --bg-solid: #DFD9EC;
+      --bg-sidebar: rgba(226, 222, 240, 0.92);
+      --bg-card: rgba(252, 250, 255, 0.88);
+      --bg-subtle: rgba(197, 183, 209, 0.38);
+      --border: rgba(114, 102, 142, 0.28);
+    }
+
+    /* ==========================================================================
+       2. GLOBAL TYPOGRAPHY (CORMORANT GARAMOND EVERYWHERE) & BASE RESET
+       ========================================================================== */
+    *, *::before, *::after,
+    html, body, h1, h2, h3, h4, h5, h6,
+    p, span, a, div, ul, ol, li,
+    button, input, textarea, select, option, label,
+    table, th, td, blockquote {
+      font-family: var(--font-main);
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      font-size: 18px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: var(--bg-page);
+      background-attachment: fixed;
+      color: var(--ink-main);
+      font-weight: 500;
+      line-height: 1.48;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.25s ease;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--ink-main);
+      line-height: 1.15;
+    }
+
+    p { margin: 0; }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.25;
+      padding: 0;
+      transition: all 0.2s ease;
+    }
+
+    input, textarea, select, option {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--ink-main);
+      line-height: 1.4;
+    }
+
+    /* Стилизованный скроллбар */
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(125, 148, 181, 0.38); border-radius: 99px; }
+
+    /* ==========================================================================
+       3. APP SHELL LAYOUT (SIDEBAR + MAIN + MOBILE HEADER & NAV)
+       ========================================================================== */
+    .app-shell {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    /* Сайдбар на ПК */
+    .sidebar {
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        width: 268px;
+        position: fixed;
+        inset: 0 auto 0 0;
+        background: var(--bg-sidebar);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-right: 1px solid var(--border);
+        z-index: 30;
+        padding: 26px 16px 20px;
+      }
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 10px 22px;
+      cursor: pointer;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--p-delicate-blue), var(--p-orchid-petal));
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-main);
+      box-shadow: 0 4px 12px rgba(125, 148, 181, 0.22);
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 27px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+
+    .brand-sub {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink-muted);
+      margin-top: 3px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-right: 2px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      text-align: left;
+      border: 1px solid transparent;
+    }
+
+    .nav-btn:hover {
+      background: var(--bg-subtle);
+      color: var(--ink-main);
+    }
+
+    .nav-btn.active {
+      background: var(--bg-card-solid);
+      color: var(--ink-main);
+      border-color: var(--border);
+      box-shadow: 0 4px 14px rgba(125, 148, 181, 0.14);
+    }
+
+    .nav-btn.active .nav-icon {
+      color: var(--accent);
+    }
+
+    .sidebar-footer {
+      padding-top: 14px;
+      margin-top: 10px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .evening-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .evening-chip:hover { background: var(--bg-hover); }
+
+    /* Мобильная шапка */
+    .mobile-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
+      background: var(--bg-sidebar);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-header { display: none; }
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--ink-main);
+    }
+
+    .icon-btn:hover { background: var(--bg-hover); }
+    .icon-btn.sm { width: 34px; height: 34px; border-radius: 10px; }
+    .icon-btn.ghost { background: transparent; border-color: transparent; color: var(--ink-muted); }
+    .icon-btn.ghost:hover { background: var(--bg-subtle); color: var(--ink-main); }
+    .icon-btn.danger:hover { background: var(--p-marys-rose); color: var(--p-marys-rose-ink); }
+
+    /* Основной контент */
+    .main-area {
+      flex: 1;
+      width: 100%;
+      padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    }
+
+    @media (min-width: 1024px) {
+      .main-area {
+        padding-left: 268px;
+        padding-bottom: 56px;
+      }
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 22px 16px;
+    }
+
+    @media (min-width: 640px) {
+      .container { padding: 30px 28px; }
+    }
+
+    @media (min-width: 1024px) {
+      .container { padding: 36px 40px; }
+    }
+
+    /* Мобильная нижняя панель */
+    .mobile-bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 35;
+      background: var(--bg-sidebar);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border);
+      padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-bottom-nav { display: none; }
+    }
+
+    .mobile-nav-grid {
+      display: grid;
+      gap: 4px;
+    }
+
+    .mnav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 6px 2px;
+      border-radius: 12px;
+      color: var(--ink-muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .mnav-btn.active {
+      color: var(--ink-main);
+      background: var(--bg-card-solid);
+      box-shadow: 0 2px 8px rgba(125, 148, 181, 0.15);
+    }
+
+    /* ==========================================================================
+       4. REUSABLE UI PRIMITIVES (CARDS, BUTTONS, INPUTS, GRIDS, PILLS)
+       ========================================================================== */
+    .view-enter {
+      animation: fadeLift 0.28s ease-out;
+    }
+
+    @keyframes fadeLift {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--ink-muted);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .page-title {
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .section-title {
+      font-size: 25px;
+      font-weight: 600;
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-soft);
+      padding: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card.clickable { cursor: pointer; }
+    .card.clickable:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-strong);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Кнопки */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 600;
+      min-height: 42px;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(125, 148, 181, 0.28);
+    }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      background: var(--bg-card-solid);
+      color: var(--ink-main);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--bg-hover); border-color: var(--border-strong); }
+
+    .btn-pastel-rose {
+      background: var(--p-marys-rose);
+      color: var(--p-marys-rose-ink);
+      border: 1px solid rgba(142, 78, 89, 0.2);
+    }
+    .btn-pastel-rose:hover { filter: brightness(0.97); }
+
+    .btn-pastel-orchid {
+      background: var(--p-orchid-petal);
+      color: #FFFFFF;
+    }
+    .btn-pastel-orchid:hover { filter: brightness(0.95); }
+
+    .btn-sm {
+      padding: 7px 14px;
+      font-size: 16px;
+      min-height: 36px;
+      border-radius: 12px;
+    }
+
+    /* Поля ввода */
+    .field-label {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+    }
+
+    .input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 10px 14px;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--ink-main);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(198, 216, 240, 0.55);
+    }
+
+    .input::placeholder {
+      color: var(--ink-faint);
+      font-style: italic;
+    }
+
+    textarea.input { resize: vertical; min-height: 92px; }
+
+    /* Табы / чипы */
+    .pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 16px;
+      font-weight: 600;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--ink-muted);
+    }
+
+    .pill-tab:hover { background: var(--bg-hover); color: var(--ink-main); }
+
+    .pill-tab.active {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(125, 148, 181, 0.24);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 11px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    /* Прогресс-бар */
+    .progress-track {
+      width: 100%;
+      height: 7px;
+      border-radius: 99px;
+      background: rgba(125, 148, 181, 0.16);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.35s ease;
+    }
+
+    /* Переключатель (toggle) */
+    .toggle {
+      width: 46px;
+      height: 26px;
+      border-radius: 99px;
+      background: rgba(125, 148, 181, 0.32);
+      position: relative;
+      flex-shrink: 0;
+      transition: background 0.25s ease;
+    }
+
+    .toggle.on { background: var(--accent); }
+    .toggle.on-orchid { background: #9C89B3; }
+    .toggle.on-rose { background: #C88C96; }
+
+    .toggle-knob {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      box-shadow: 0 2px 5px rgba(38, 48, 64, 0.2);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .toggle.on .toggle-knob,
+    .toggle.on-orchid .toggle-knob,
+    .toggle.on-rose .toggle-knob {
+      transform: translateX(20px);
+    }
+
+    /* Чекбокс задачи */
+    .task-checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      border: 1.8px solid var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: #FFFFFF;
+      margin-top: 2px;
+    }
+
+    .task-checkbox.checked {
+      background: var(--p-gossamer-green);
+      border-color: var(--p-gossamer-green-ink);
+      color: var(--ink-main);
+    }
+
+    /* Адаптивные сетки */
+    .stack { display: flex; flex-direction: column; gap: 22px; }
+    .stack-sm { display: flex; flex-direction: column; gap: 12px; }
+    .row { display: flex; align-items: center; gap: 10px; }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .grid-widgets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .grid-split { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start; }
+
+    @media (min-width: 640px) {
+      .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 900px) {
+      .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .grid-widgets { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .grid-split { grid-template-columns: 7fr 5fr; }
+      .grid-split.reverse { grid-template-columns: 5fr 7fr; }
+    }
+
+    /* ==========================================================================
+       5. SPECIFIC MODULE STYLES (CALENDAR, HABITS, MOVIES, BOOKS, NOTES, CYCLE)
+       ========================================================================== */
+    /* Звёзды 1–10 */
+    .star-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      flex-wrap: wrap;
+    }
+
+    .star-btn {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(125, 148, 181, 0.34);
+      padding: 0;
+    }
+
+    .star-btn:hover { transform: scale(1.16); color: #D4B956; }
+    .star-btn.filled { color: #D4B956; }
+    .star-btn.filled svg { fill: var(--p-pastel-yellow); stroke: #B99B3B; }
+
+    /* Карточка цитаты в книгах */
+    .quote-card {
+      position: relative;
+      background: var(--p-cappucino-foam);
+      border: 1px solid rgba(197, 183, 209, 0.55);
+      border-left: 3.5px solid var(--p-orchid-petal);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .quote-text {
+      font-style: italic;
+      font-size: 19px;
+      line-height: 1.5;
+      color: var(--ink-main);
+    }
+
+    .quote-mark {
+      font-size: 26px;
+      line-height: 0.7;
+      color: var(--p-orchid-petal-ink);
+      opacity: 0.6;
+      margin-right: 4px;
+    }
+
+    /* Календарная сетка */
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .cal-weekday {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      padding-bottom: 6px;
+    }
+
+    .cal-cell {
+      min-height: 58px;
+      padding: 6px;
+      border-radius: 13px;
+      border: 1px solid var(--border);
+      background: var(--bg-card-solid);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    @media (min-width: 640px) {
+      .cal-cell { min-height: 76px; padding: 8px; }
+    }
+
+    .cal-cell.selected {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(125, 148, 181, 0.35);
+    }
+
+    .cal-cell.cycle-logged {
+      background: var(--p-marys-rose);
+      border-color: #DCA8B0;
+    }
+
+    .cal-cell.cycle-predicted {
+      background: rgba(247, 214, 218, 0.45);
+      border: 1.5px dashed #C78C96;
+    }
+
+    .cal-cell.cycle-ovulation {
+      background: rgba(197, 183, 209, 0.45);
+      border-color: #A591B8;
+    }
+
+    .cal-day-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .cal-day-num.today {
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+
+    /* Таблица привычек */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+    }
+
+    .habits-table {
+      width: 100%;
+      min-width: 640px;
+      border-collapse: collapse;
+    }
+
+    .habits-table th, .habits-table td {
+      padding: 13px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .habits-table tr:last-child td { border-bottom: none; }
+
+    .habit-check-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      border: 1.5px solid var(--border-strong);
+      background: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .habit-check-btn.done {
+      background: var(--p-gossamer-green);
+      border-color: #7AA688;
+      color: var(--ink-main);
+      box-shadow: 0 3px 8px rgba(181, 211, 190, 0.55);
+    }
+
+    /* Сетка заметок (masonry) */
+    .notes-masonry {
+      column-count: 1;
+      column-gap: 16px;
+    }
+    @media (min-width: 640px) { .notes-masonry { column-count: 2; } }
+    @media (min-width: 1120px) { .notes-masonry { column-count: 3; } }
+
+    .note-card {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(38, 48, 64, 0.1);
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .note-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .note-card.dark-surface {
+      color: #FFFFFF;
+    }
+    .note-card.dark-surface h4,
+    .note-card.dark-surface p,
+    .note-card.dark-surface .note-body {
+      color: #FFFFFF;
+    }
+    .note-card.dark-surface .note-meta {
+      color: rgba(255, 255, 255, 0.85);
+      border-top-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Палитра из 9 оттенков Pantone */
+    .pantone-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .pantone-option input { display: none; }
+
+    .pantone-tile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 9px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: #FFFFFF;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .pantone-option input:checked + .pantone-tile {
+      border-color: var(--ink-main);
+      box-shadow: 0 0 0 2px rgba(198, 216, 240, 0.65);
+    }
+
+    .pantone-swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      border: 1px solid rgba(38, 48, 64, 0.12);
+      flex-shrink: 0;
+    }
+
+    .pantone-name {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--ink-main);
+    }
+
+    /* Мини-календарь цикла */
+    .cycle-day-btn {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .cycle-day-btn.selected {
+      border-color: var(--ink-main);
+      box-shadow: 0 0 0 2px rgba(125, 148, 181, 0.3);
+    }
+    .cycle-day-btn.logged { background: var(--p-marys-rose); border-color: #CE959E; }
+    .cycle-day-btn.predicted { background: rgba(247, 214, 218, 0.48); border: 1.5px dashed #C78C96; }
+    .cycle-day-btn.ovulation { background: rgba(197, 183, 209, 0.45); border-color: #A18DB5; }
+
+    /* ==========================================================================
+       6. MODALS, BOTTOM SHEET & TOASTS
+       ========================================================================== */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(38, 48, 64, 0.34);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .overlay.hidden { display: none; }
+
+    .modal-box {
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #FCFDFE;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: var(--shadow-modal);
+      animation: fadeLift 0.22s ease-out;
+    }
+
+    .sheet-box {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #FCFDFE;
+      border-top-left-radius: 26px;
+      border-top-right-radius: 26px;
+      border-top: 1px solid var(--border);
+      padding: 16px 20px calc(26px + env(safe-area-inset-bottom, 0px));
+      box-shadow: var(--shadow-modal);
+      animation: fadeLift 0.22s ease-out;
+    }
+
+    .sheet-handle {
+      width: 44px;
+      height: 4px;
+      border-radius: 99px;
+      background: var(--border-strong);
+      margin: 0 auto 14px;
+    }
+
+    .toast-stack {
+      position: fixed;
+      right: 16px;
+      bottom: 84px;
+      z-index: 80;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: calc(100vw - 32px);
+      pointer-events: none;
+    }
+
+    @media (min-width: 1024px) {
+      .toast-stack { bottom: 24px; right: 24px; }
+    }
+
+    .toast {
+      pointer-events: auto;
+      background: #FFFFFF;
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 12px 18px;
+      box-shadow: var(--shadow-hover);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
+      font-weight: 600;
+      animation: fadeLift 0.22s ease-out;
+    }
+
+    /* Утилиты */
+    .muted { color: var(--ink-muted); }
+    .faint { color: var(--ink-faint); }
+    .italic { font-style: italic; }
+    .text-sm { font-size: 15px; }
+    .text-xs { font-size: 14px; }
+    .line-through { text-decoration: line-through; opacity: 0.62; }
+    .empty-box {
+      text-align: center;
+      padding: 42px 20px;
+      background: var(--bg-card);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+    }
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 14px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- САЙДБАР (ПК) -->
+    <aside class="sidebar">
+      <div class="brand" onclick="navigate('today')">
+        <div class="brand-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="9" opacity="0.45"/>
+            <path d="M12 3a9 9 0 0 1 9 9"/>
+            <circle cx="12" cy="12" r="2.3" fill="currentColor"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">Мой ритм</div>
+          <div class="brand-sub">личный дневник</div>
+        </div>
+      </div>
+
+      <nav id="desktop-nav" class="sidebar-nav"></nav>
+
+      <div class="sidebar-footer">
+        <button onclick="toggleEveningMode()" class="evening-chip" id="sidebar-evening-btn">
+          <span class="row" style="gap: 8px;">
+            <span id="sidebar-evening-icon"></span>
+            <span>Вечерний режим</span>
+          </span>
+          <span id="sidebar-evening-badge" class="badge"></span>
+        </button>
+
+        <button onclick="navigate('settings')" class="nav-btn" id="sidebar-settings-btn">
+          <span class="nav-icon">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </span>
+          <span>Настройки</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ОСНОВНАЯ ЧАСТЬ -->
+    <div style="flex: 1; display: flex; flex-direction: column; width: 100%;">
+      <!-- МОБИЛЬНАЯ ШАПКА -->
+      <header class="mobile-header">
+        <div class="row" onclick="navigate('today')" style="cursor: pointer;">
+          <div class="brand-mark" style="width: 34px; height: 34px;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <circle cx="12" cy="12" r="9" opacity="0.45"/>
+              <path d="M12 3a9 9 0 0 1 9 9"/>
+              <circle cx="12" cy="12" r="2.3" fill="currentColor"/>
+            </svg>
+          </div>
+          <span style="font-size: 23px; font-weight: 700;">Мой ритм</span>
+        </div>
+
+        <div class="row" style="gap: 8px;">
+          <button onclick="toggleEveningMode()" id="mobile-evening-btn" class="icon-btn" title="Вечерний режим"></button>
+          <button onclick="navigate('settings')" class="icon-btn" title="Настройки">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- РАБОЧАЯ ОБЛАСТЬ -->
+      <main class="main-area">
+        <div id="app-view" class="container"></div>
+      </main>
+    </div>
+
+    <!-- МОБИЛЬНАЯ НИЖНЯЯ ПАНЕЛЬ -->
+    <nav id="mobile-bottom-nav" class="mobile-bottom-nav"></nav>
+  </div>
+
+  <!-- МОБИЛЬНАЯ ШТОРКА «ЕЩЁ» -->
+  <div id="more-sheet-overlay" class="overlay hidden" onclick="if(event.target===this) closeMoreSheet()">
+    <div class="sheet-box">
+      <div class="sheet-handle"></div>
+      <h3 style="font-size: 24px; margin-bottom: 14px;">Все разделы</h3>
+      <div id="more-sheet-grid" class="grid-2" style="grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;"></div>
+    </div>
+  </div>
+
+  <!-- УНИВЕРСАЛЬНОЕ МОДАЛЬНОЕ ОКНО -->
+  <div id="modal-overlay" class="overlay hidden" onclick="if(event.target===this) closeModal()">
+    <div id="modal-box" class="modal-box"></div>
+  </div>
+
+  <!-- ОКНО ПОДТВЕРЖДЕНИЯ (ВМЕСТО confirm) -->
+  <div id="confirm-overlay" class="overlay hidden" onclick="if(event.target===this) resolveConfirm(false)">
+    <div class="modal-box" style="max-width: 420px;">
+      <h3 id="confirm-title" style="font-size: 26px; margin-bottom: 8px;">Подтверждение</h3>
+      <p id="confirm-text" class="muted" style="margin-bottom: 22px; font-size: 18px;"></p>
+      <div class="row" style="justify-content: flex-end;">
+        <button class="btn btn-secondary btn-sm" onclick="resolveConfirm(false)">Отмена</button>
+        <button id="confirm-ok-btn" class="btn btn-primary btn-sm" onclick="resolveConfirm(true)">Подтвердить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- КОНТЕЙНЕР УВЕДОМЛЕНИЙ (TOASTS) -->
+  <div id="toast-stack" class="toast-stack"></div>
+
+  <!-- СКРЫТЫЙ INPUT ДЛЯ ИМПОРТА JSON -->
+  <input type="file" id="json-import-input" accept=".json,application/json" style="display:none;" onchange="handleImportFile(event)" />
+
+  <script>
+    /* ==========================================================================
+       1. КОНСТАНТЫ, PANTONE-ПАЛИТРА, ИКОНКИ И КОНФИГУРАЦИЯ
+       ========================================================================== */
+    const STORAGE_KEY = 'moi_ritm_pastel_v2';
+
+    const PANTONE_COLORS = [
+      { id: 'delicate-blue', name: 'Delicate Blue', hex: '#C6D8F0', darkText: true },
+      { id: 'endless-sky', name: 'Endless Sky', hex: '#7D94B5', darkText: false },
+      { id: 'marys-rose', name: "Mary's Rose", hex: '#F7D6DA', darkText: true },
+      { id: 'gossamer-green', name: 'Gossamer Green', hex: '#B5D3BE', darkText: true },
+      { id: 'pastel-yellow', name: 'Pastel Yellow', hex: '#F2E9B1', darkText: true },
+      { id: 'orchid-petal', name: 'Orchid Petal', hex: '#C5B7D1', darkText: true },
+      { id: 'heavenly-pink', name: 'Heavenly Pink', hex: '#F3E1E5', darkText: true },
+      { id: 'cappucino-foam', name: 'Cappucino Foam', hex: '#F4F3E8', darkText: true },
+      { id: 'hushed-violet', name: 'Hushed Violet', hex: '#D2C1C8', darkText: true }
+    ];
+
+    const DOMAINS = {
+      work: {
+        id: 'work',
+        label: 'Работа',
+        accent: '#7D94B5',
+        softBg: 'rgba(125, 148, 181, 0.16)',
+        ink: '#485E7E',
+        subcategories: ['Проекты', 'Операционка', 'Встречи', 'Контент']
+      },
+      personal: {
+        id: 'personal',
+        label: 'Личное',
+        accent: '#E3AAB2',
+        softBg: 'rgba(247, 214, 218, 0.65)',
+        ink: '#8E4E59',
+        subcategories: ['Дом', 'Забота о себе', 'Покупки', 'Близкие']
+      },
+      interests: {
+        id: 'interests',
+        label: 'Интересы',
+        accent: '#B19EC2',
+        softBg: 'rgba(197, 183, 209, 0.38)',
+        ink: '#5B4A6E',
+        subcategories: ['Книги и кино', 'Творчество', 'Идеи', 'Вдохновение']
+      }
+    };
+
+    const MODULES_META = [
+      { id: 'today', label: 'Сегодня', alwaysVisible: true, icon: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>' },
+      { id: 'tasks', label: 'Задачи', icon: '<rect x="3" y="5" width="6" height="6" rx="1.5"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8M13 12h8M13 18h8"/>' },
+      { id: 'calendar', label: 'Календарь', icon: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>' },
+      { id: 'habits', label: 'Трекеры', icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>' },
+      { id: 'movies', label: 'Кино', icon: '<rect x="2" y="4" width="20" height="16" rx="2"/><line x1="7" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="17" y2="20"/><line x1="2" y1="9" x2="7" y2="9"/><line x1="2" y1="15" x2="7" y2="15"/><line x1="17" y1="9" x2="22" y2="9"/><line x1="17" y1="15" x2="22" y2="15"/>' },
+      { id: 'books', label: 'Книги', icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="7" x2="16" y2="7"/><line x1="9" y1="11" x2="14" y2="11"/>' },
+      { id: 'notes', label: 'Заметки', icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>' },
+      { id: 'cycle', label: 'Цикл', icon: '<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>' },
+      { id: 'finance', label: 'Финансы', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>' }
+    ];
+
+    const MOVIE_GENRES = ['Фэнтези', 'Романтика', 'История', 'Мифология', 'Драма', 'Анимация', 'Комедия', 'Триллер', 'Артхаус', 'Документальное'];
+    const BOOK_GENRES = ['Мифология', 'Классика', 'Романтика', 'Фэнтези', 'История', 'Психология', 'Поэзия', 'Нон-фикшн', 'Проза'];
+    const NOTE_CATEGORIES = ['Все', 'Личное', 'Работа', 'Интересы', 'Идеи'];
+    const EXPENSE_CATEGORIES = ['Продукты', 'Кафе и кофе', 'Дом и уют', 'Книги и кино', 'Красота и здоровье', 'Транспорт', 'Одежда', 'Другое'];
+    const INCOME_CATEGORIES = ['Зарплата', 'Фриланс', 'Подарок', 'Бонус', 'Другое'];
+    const SYMPTOM_TAGS = ['Энергия', 'Спокойствие', 'Вдохновение', 'Хороший сон', 'Усталость', 'Нежность', 'Тянет живот', 'Головная боль', 'Чувствительность'];
+
+    const MONTHS_RU = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+    const MONTHS_GEN_RU = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    const WEEKDAYS_FULL_RU = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+    const WEEKDAYS_SHORT_MON = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
+    /* ==========================================================================
+       2. УТИЛИТЫ (ДАТЫ, ФОРМАТИРОВАНИЕ, ИКОНКИ, БЕЗОПАСНЫЙ ВЫВОД)
+       ========================================================================== */
+    function pad2(n) { return String(n).padStart(2, '0'); }
+    function toDateStr(d = new Date()) { return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`; }
+    function parseDateStr(str) { const [y, m, d] = str.split('-').map(Number); return new Date(y, m - 1, d); }
+    function addDays(dateStr, days) { const d = parseDateStr(dateStr); d.setDate(d.getDate() + days); return toDateStr(d); }
+    function diffDays(aStr, bStr) {
+      const a = parseDateStr(aStr), b = parseDateStr(bStr);
+      return Math.round((Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()) - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) / 86400000);
+    }
+    function getMondayOfWeek(dateStr) {
+      const d = parseDateStr(dateStr);
+      const day = d.getDay();
+      d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day));
+      return toDateStr(d);
+    }
+    function formatHumanDate(dateStr, withWeekday = false) {
+      const d = parseDateStr(dateStr);
+      const base = `${d.getDate()} ${MONTHS_GEN_RU[d.getMonth()]}`;
+      return withWeekday ? `${WEEKDAYS_FULL_RU[d.getDay()]}, ${base}` : base;
+    }
+    function formatShortDate(dateStr) {
+      if (!dateStr) return '';
+      const today = toDateStr();
+      if (dateStr === today) return 'Сегодня';
+      if (dateStr === addDays(today, 1)) return 'Завтра';
+      if (dateStr === addDays(today, -1)) return 'Вчера';
+      const d = parseDateStr(dateStr);
+      return `${d.getDate()} ${MONTHS_GEN_RU[d.getMonth()].slice(0, 3)}`;
+    }
+    function formatCurrency(num) {
+      const sign = num < 0 ? '−' : '';
+      return sign + Math.round(Math.abs(num)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+    }
+    function pluralDays(n) {
+      const abs = Math.abs(n) % 100, n1 = abs % 10;
+      if (abs > 10 && abs < 20) return `${n} дней`;
+      if (n1 > 1 && n1 < 5) return `${n} дня`;
+      if (n1 === 1) return `${n} день`;
+      return `${n} дней`;
+    }
+    function getGreeting() {
+      const h = new Date().getHours();
+      if (h >= 5 && h < 12) return 'Доброе утро';
+      if (h >= 12 && h < 18) return 'Добрый день';
+      if (h >= 18 && h < 23) return 'Добрый вечер';
+      return 'Тихой ночи';
+    }
+    function getRatingCaption(score) {
+      const n = Number(score) || 0;
+      if (n === 0) return 'Без оценки';
+      if (n <= 2) return 'Не моё';
+      if (n <= 4) return 'Слабовато';
+      if (n <= 6) return 'Неплохо на раз';
+      if (n === 7) return 'Хорошо';
+      if (n === 8) return 'Очень понравилось';
+      if (n === 9) return 'Восхитительно';
+      return 'В самое сердце';
+    }
+    function uid(prefix = 'id') { return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`; }
+    function esc(str = '') {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function iconSvg(path, size = 19) {
+      return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+    }
+    function copyTextSafe(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Цитата скопирована');
+      } catch (e) {
+        showToast('Не удалось скопировать');
+      }
+      ta.remove();
+    }
+
+    /* ==========================================================================
+       3. СОСТОЯНИЕ И ЭСТЕТИЧНЫЕ СТАРТОВЫЕ ДАННЫЕ
+       ========================================================================== */
+    function createEmptyState() {
+      return {
+        settings: {
+          theme: 'powder',
+          iconStyle: 'powder',
+          eveningMode: false,
+          showCycleOnCalendar: true,
+          modules: {
+            tasks: true, calendar: true, habits: true,
+            movies: true, books: true, notes: true,
+            cycle: true, finance: true
+          },
+          moduleIdeas: []
+        },
+        tasks: [],
+        habits: [],
+        movies: [],
+        books: [],
+        notes: [],
+        cycle: { cycleLength: 28, periodLength: 5, periodDays: [], logs: {} },
+        transactions: []
+      };
+    }
+
+    function createDemoState() {
+      const today = toDateStr();
+      const yesterday = addDays(today, -1);
+      const tomorrow = addDays(today, 1);
+      const plus2 = addDays(today, 2);
+
+      const periodDays = [];
+      for (let i = 0; i < 5; i++) periodDays.push(addDays(today, -39 + i));
+      for (let i = 0; i < 5; i++) periodDays.push(addDays(today, -11 + i));
+
+      const logs = (offsets) => {
+        const obj = {};
+        offsets.forEach(o => obj[addDays(today, o)] = true);
+        return obj;
+      };
+
+      const nowD = parseDateStr(today);
+      const ym = `${nowD.getFullYear()}-${pad2(nowD.getMonth() + 1)}`;
+      const safeDay = (d) => `${ym}-${pad2(Math.min(d, nowD.getDate() || 1))}`;
+
+      return {
+        settings: {
+          theme: 'powder',
+          iconStyle: 'powder',
+          eveningMode: false,
+          showCycleOnCalendar: true,
+          modules: {
+            tasks: true, calendar: true, habits: true,
+            movies: true, books: true, notes: true,
+            cycle: true, finance: true
+          },
+          moduleIdeas: ['Вишлист подарков', 'Дневник благодарности']
+        },
+        tasks: [
+          { id: uid('t'), title: 'Согласовать визуал и тексты для нового проекта', domain: 'work', subcategory: 'Проекты', date: today, time: '11:30', priority: 'high', note: 'Проверить пастельные акценты и шрифты.', completed: false },
+          { id: uid('t'), title: 'Ответить на рабочие письма и закрыть мелкие правки', domain: 'work', subcategory: 'Операционка', date: today, time: '15:00', priority: 'normal', note: '', completed: true },
+          { id: uid('t'), title: 'Разобрать заметки со вчерашнего созвона', domain: 'work', subcategory: 'Встречи', date: yesterday, time: '', priority: 'normal', note: 'Можно перенести на завтра.', completed: false },
+          { id: uid('t'), title: 'Купить свежие цветы и лавандовый чай', domain: 'personal', subcategory: 'Дом', date: today, time: '18:00', priority: 'normal', note: '', completed: false },
+          { id: uid('t'), title: 'Записаться на расслабляющий массаж', domain: 'personal', subcategory: 'Забота о себе', date: today, time: '', priority: 'high', note: 'Уточнить окошки на пятницу вечером.', completed: false },
+          { id: uid('t'), title: 'Прогулка по набережной и ужин с подругой', domain: 'personal', subcategory: 'Близкие', date: plus2, time: '19:00', priority: 'normal', note: '', completed: false },
+          { id: uid('t'), title: 'Прочитать две главы «Песни Ахилла» перед сном', domain: 'interests', subcategory: 'Книги и кино', date: today, time: '21:30', priority: 'normal', note: 'Выписать красивые цитаты в читательский дневник.', completed: false },
+          { id: uid('t'), title: 'Подобрать референсы для осеннего скетчбука', domain: 'interests', subcategory: 'Творчество', date: tomorrow, time: '', priority: 'normal', note: '', completed: false }
+        ],
+        habits: [
+          { id: uid('h'), name: 'Стакан тёплой воды утром', domain: 'personal', logs: logs([-5, -4, -3, -2, -1, 0]) },
+          { id: uid('h'), name: 'Чтение 25 минут в тишине', domain: 'interests', logs: logs([-4, -3, -2, -1]) },
+          { id: uid('h'), name: 'Прогулка на свежем воздухе', domain: 'personal', logs: logs([-6, -4, -2, -1, 0]) },
+          { id: uid('h'), name: 'Уход за кожей и ранний сон', domain: 'personal', logs: logs([-3, -2, -1]) }
+        ],
+        movies: [
+          {
+            id: uid('m'),
+            title: 'Гордость и предубеждение',
+            year: '2005',
+            genre: 'Романтика',
+            status: 'watched',
+            rating: 10,
+            watchDate: addDays(today, -6),
+            review: 'Невероятная музыка, туманные рассветы и самые нежные диалоги. Идеальный фильм для уютного дождливого вечера.'
+          },
+          {
+            id: uid('m'),
+            title: 'Унесённые призраками',
+            year: '2001',
+            genre: 'Анимация',
+            status: 'watched',
+            rating: 9,
+            watchDate: addDays(today, -14),
+            review: 'Каждый кадр — как акварельная открытка. Очень тёплое послевкусие и чувство волшебства.'
+          },
+          {
+            id: uid('m'),
+            title: 'Прошлые жизни',
+            year: '2023',
+            genre: 'Драма',
+            status: 'planned',
+            rating: 0,
+            watchDate: '',
+            review: 'Давно хочу посмотреть в тихий вечер с чашкой какао — советуют за деликатную интонацию.'
+          },
+          {
+            id: uid('m'),
+            title: 'Песнь моря',
+            year: '2014',
+            genre: 'Мифология',
+            status: 'planned',
+            rating: 0,
+            watchDate: '',
+            review: 'Кельтские легенды и потрясающая пастельная графика.'
+          }
+        ],
+        books: [
+          {
+            id: uid('b'),
+            title: 'Песнь Ахилла',
+            author: 'Мадлен Миллер',
+            genre: 'Мифология',
+            status: 'reading',
+            rating: 10,
+            review: 'Поэтичный, хрупкий и захватывающий пересказ древнегреческого мифа — читается на одном дыхании.',
+            quotes: [
+              { id: uid('q'), text: 'Назови мне героя, и я напишу тебе трагедию.', page: 'Глава 14' },
+              { id: uid('q'), text: 'Я узнал бы его по одному прикосновению, по запаху; узнал бы его, даже будь я слеп, по тому, как он дышит.', page: 'Стр. 218' }
+            ]
+          },
+          {
+            id: uid('b'),
+            title: 'Маленькие женщины',
+            author: 'Луиза Мэй Олкотт',
+            genre: 'Классика',
+            status: 'read',
+            rating: 9,
+            review: 'Очень светлая история о взрослении, семейном тепле и поиске собственного голоса.',
+            quotes: [
+              { id: uid('q'), text: 'Я не боюсь бурь, ведь я учусь управлять своим кораблём.', page: 'Часть II, стр. 312' }
+            ]
+          },
+          {
+            id: uid('b'),
+            title: 'Цирцея',
+            author: 'Мадлен Миллер',
+            genre: 'Мифология',
+            status: 'want',
+            rating: 0,
+            review: 'Планирую начать сразу после «Песни Ахилла» — очень люблю античную эстетику.',
+            quotes: []
+          }
+        ],
+        notes: [
+          {
+            id: uid('n'),
+            title: 'Палитра настроения на этот месяц',
+            content: 'Больше воздуха, пудрового голубого, неспешных завтраков и красивых книг по вечерам. Не торопиться и беречь внимание.',
+            category: 'Личное',
+            color: 'delicate-blue',
+            pinned: true,
+            updatedAt: today
+          },
+          {
+            id: uid('n'),
+            title: 'Идеи для уютного дома',
+            content: '• Льняные шторы оттенка Cappucino Foam\n• Керамическая кружка ручной работы\n• Свеча с нотами инжира и белого чая',
+            category: 'Личное',
+            color: 'marys-rose',
+            pinned: true,
+            updatedAt: yesterday
+          },
+          {
+            id: uid('n'),
+            title: 'Заметки по рабочему ритму',
+            content: '1. Планировать максимум 3 ключевых дела на день.\n2. После 19:00 включать вечерний режим и не открывать рабочие чаты.',
+            category: 'Работа',
+            color: 'gossamer-green',
+            pinned: false,
+            updatedAt: today
+          },
+          {
+            id: uid('n'),
+            title: 'Темы для творческого дневника',
+            content: 'Собрать коллекцию любимых сцен из исторических фильмов, эстетичных кадров и коротких эссе о прочитанных книгах.',
+            category: 'Идеи',
+            color: 'orchid-petal',
+            pinned: false,
+            updatedAt: addDays(today, -3)
+          }
+        ],
+        cycle: {
+          cycleLength: 28,
+          periodLength: 5,
+          periodDays,
+          logs: {
+            [today]: { tags: ['Энергия', 'Вдохновение', 'Хороший сон'], note: 'Лёгкое, ясное утро и отличное настроение.' },
+            [addDays(today, -10)]: { tags: ['Усталость', 'Тянет живот'], note: 'Хотелось тёплого пледа и тишины.' }
+          }
+        },
+        transactions: [
+          { id: uid('tx'), type: 'income', amount: 115000, category: 'Зарплата', date: safeDay(1), comment: 'Основная выплата' },
+          { id: uid('tx'), type: 'income', amount: 24000, category: 'Фриланс', date: safeDay(8), comment: 'Творческий проект' },
+          { id: uid('tx'), type: 'expense', amount: 12500, category: 'Дом и уют', date: safeDay(3), comment: 'Текстиль и свечи' },
+          { id: uid('tx'), type: 'expense', amount: 7800, category: 'Продукты', date: safeDay(5), comment: 'Недельная закупка' },
+          { id: uid('tx'), type: 'expense', amount: 3400, category: 'Книги и кино', date: safeDay(9), comment: 'Две новые книги и билеты в кино' },
+          { id: uid('tx'), type: 'expense', amount: 2650, category: 'Кафе и кофе', date: today, comment: 'Утренний латте и круассан' },
+          { id: uid('tx'), type: 'expense', amount: 5200, category: 'Красота и здоровье', date: safeDay(11), comment: 'Уходовая косметика' }
+        ]
+      };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          const demo = createDemoState();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(demo));
+          return demo;
+        }
+        const parsed = JSON.parse(raw);
+        const base = createEmptyState();
+        return {
+          ...base,
+          ...parsed,
+          settings: {
+            ...base.settings,
+            ...(parsed.settings || {}),
+            modules: { ...base.settings.modules, ...(parsed.settings?.modules || {}) }
+          },
+          cycle: {
+            ...base.cycle,
+            ...(parsed.cycle || {}),
+            periodDays: Array.isArray(parsed.cycle?.periodDays) ? parsed.cycle.periodDays : [],
+            logs: parsed.cycle?.logs || {}
+          },
+          movies: Array.isArray(parsed.movies) ? parsed.movies : [],
+          books: Array.isArray(parsed.books) ? parsed.books : []
+        };
+      } catch (e) {
+        return createDemoState();
+      }
+    }
+
+    let state = loadState();
+
+    const ui = {
+      route: 'today',
+      taskDomain: 'all',
+      taskStatus: 'active',
+      taskSearch: '',
+      calYear: new Date().getFullYear(),
+      calMonth: new Date().getMonth(),
+      calSelectedDate: toDateStr(),
+      habitWeekStart: getMondayOfWeek(toDateStr()),
+      movieFilter: 'all',
+      movieSearch: '',
+      bookTab: 'all',
+      bookSearch: '',
+      noteCategory: 'Все',
+      noteSearch: '',
+      cycleYear: new Date().getFullYear(),
+      cycleMonth: new Date().getMonth(),
+      cycleSelectedDate: toDateStr(),
+      finYear: new Date().getFullYear(),
+      finMonth: new Date().getMonth(),
+      finFilter: 'all',
+      finFormType: 'expense'
+    };
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        showToast('Не удалось сохранить данные');
+      }
+    }
+
+    /* ==========================================================================
+       4. УВЕДОМЛЕНИЯ (TOASTS), МОДАЛЬНЫЕ ОКНА И ПОДТВЕРЖДЕНИЯ
+       ========================================================================== */
+    function showToast(message, dotColor = 'var(--p-endless-sky)') {
+      const stack = document.getElementById('toast-stack');
+      if (!stack) return;
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.innerHTML = `<span class="dot" style="background:${dotColor}; width:10px; height:10px;"></span><span>${esc(message)}</span>`;
+      stack.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(6px)';
+        el.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+        setTimeout(() => el.remove(), 260);
+      }, 2600);
+    }
+
+    let confirmResolver = null;
+    function askConfirm(title, text, okText = 'Удалить') {
+      document.getElementById('confirm-title').textContent = title;
+      document.getElementById('confirm-text').textContent = text;
+      document.getElementById('confirm-ok-btn').textContent = okText;
+      document.getElementById('confirm-overlay').classList.remove('hidden');
+      return new Promise(res => { confirmResolver = res; });
+    }
+    function resolveConfirm(ans) {
+      document.getElementById('confirm-overlay').classList.add('hidden');
+      if (confirmResolver) { const fn = confirmResolver; confirmResolver = null; fn(ans); }
+    }
+
+    function openModal(html) {
+      document.getElementById('modal-box').innerHTML = html;
+      document.getElementById('modal-overlay').classList.remove('hidden');
+    }
+    function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
+    function openMoreSheet() { document.getElementById('more-sheet-overlay').classList.remove('hidden'); }
+    function closeMoreSheet() { document.getElementById('more-sheet-overlay').classList.add('hidden'); }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { closeModal(); closeMoreSheet(); resolveConfirm(false); }
+    });
+
+    /* ==========================================================================
+       5. ЛОГИКА ЦИКЛА И ПРИВЫЧЕК
+       ========================================================================== */
+    function getCycleEpisodes() {
+      const days = [...new Set(state.cycle.periodDays)].sort();
+      if (!days.length) return [];
+      const eps = [];
+      let cur = { start: days[0], end: days[0], days: [days[0]] };
+      for (let i = 1; i < days.length; i++) {
+        if (diffDays(cur.end, days[i]) <= 2) {
+          cur.end = days[i];
+          cur.days.push(days[i]);
+        } else {
+          cur.length = diffDays(cur.start, cur.end) + 1;
+          eps.push(cur);
+          cur = { start: days[i], end: days[i], days: [days[i]] };
+        }
+      }
+      cur.length = diffDays(cur.start, cur.end) + 1;
+      eps.push(cur);
+      return eps;
+    }
+
+    function getCyclePhaseInfo(day, cycleLen, periodLen, isLogged = false) {
+      const ovDay = Math.max(periodLen + 2, cycleLen - 14);
+      if (isLogged || (day >= 1 && day <= periodLen)) {
+        return {
+          name: 'Менструация', short: 'Менструация',
+          bg: 'var(--p-marys-rose)', ink: 'var(--p-marys-rose-ink)', ring: '#D9949F',
+          desc: 'Время замедлиться, окружить себя теплом и заботой. Выбирайте мягкий ритм и спокойные дела.'
+        };
+      }
+      if (day >= ovDay - 2 && day <= ovDay + 1) {
+        return {
+          name: 'Овуляция', short: 'Овуляция',
+          bg: 'var(--p-orchid-petal)', ink: '#FFFFFF', ring: '#A994BC',
+          desc: 'Пик ясности, притягательности и внутренней энергии. Прекрасное время для общения и смелых планов.'
+        };
+      }
+      if (day > periodLen && day < ovDay - 2) {
+        return {
+          name: 'Фолликулярная фаза', short: 'Фолликулярная',
+          bg: 'var(--p-delicate-blue)', ink: '#3B5270', ring: '#7D94B5',
+          desc: 'Силы и любопытство бережно растут. Легко начинать новые проекты, читать, учиться и мечтать.'
+        };
+      }
+      return {
+        name: 'Лютеиновая фаза', short: 'Лютеиновая',
+        bg: 'var(--p-hushed-violet)', ink: '#573F4B', ring: '#B79EA8',
+        desc: 'Уютная фаза завершения дел, наведения порядка и внимательного отношения к своему сну и отдыху.'
+      };
+    }
+
+    function getCycleOverview(refDate = toDateStr()) {
+      const episodes = getCycleEpisodes();
+      const cycleLen = Number(state.cycle.cycleLength) || 28;
+      const periodLen = Number(state.cycle.periodLength) || 5;
+      const past = episodes.filter(e => e.start <= refDate);
+      if (!past.length) return { hasData: false, cycleLen, periodLen, episodes };
+      const last = past[past.length - 1];
+      const dayOfCycle = diffDays(last.start, refDate) + 1;
+      const isLoggedToday = state.cycle.periodDays.includes(refDate);
+      const nextPeriodStart = addDays(last.start, cycleLen);
+      const daysUntilNext = diffDays(refDate, nextPeriodStart);
+      const ovDay = Math.max(periodLen + 2, cycleLen - 14);
+      const ovulationDate = addDays(last.start, ovDay - 1);
+      const effDay = dayOfCycle <= cycleLen ? dayOfCycle : ((dayOfCycle - 1) % cycleLen) + 1;
+      const phase = getCyclePhaseInfo(effDay, cycleLen, periodLen, isLoggedToday);
+
+      return {
+        hasData: true, cycleLen, periodLen, episodes, lastStart: last.start,
+        dayOfCycle, isLate: dayOfCycle > cycleLen, lateDays: Math.max(0, dayOfCycle - cycleLen),
+        nextPeriodStart, daysUntilNext, ovulationDate, phase, isLoggedToday
+      };
+    }
+
+    function getCycleDateStatus(dateStr) {
+      if (state.cycle.periodDays.includes(dateStr)) return { type: 'logged', label: 'Отмеченный день менструации' };
+      const ov = getCycleOverview(toDateStr());
+      if (!ov.hasData) return null;
+      const diff = diffDays(ov.lastStart, dateStr);
+      if (diff < 0) return null;
+      const cycIdx = Math.floor(diff / ov.cycleLen);
+      const dayIn = (diff % ov.cycleLen) + 1;
+      const ovDay = Math.max(ov.periodLen + 2, ov.cycleLen - 14);
+      const today = toDateStr();
+      if (dayIn >= 1 && dayIn <= ov.periodLen && (cycIdx >= 1 || dateStr > today)) {
+        return { type: 'predicted', label: 'Прогноз менструации', dayIn };
+      }
+      if (dayIn >= ovDay - 2 && dayIn <= ovDay + 1) {
+        return { type: 'ovulation', label: 'Окно овуляции', dayIn };
+      }
+      return { type: 'normal', dayIn, phase: getCyclePhaseInfo(dayIn, ov.cycleLen, ov.periodLen, false) };
+    }
+
+    function getHabitStreak(habit) {
+      const today = toDateStr();
+      let cursor = habit.logs?.[today] ? today : addDays(today, -1);
+      let streak = 0;
+      while (habit.logs?.[cursor]) { streak++; cursor = addDays(cursor, -1); }
+      return streak;
+    }
+
+    function getHabitWeekPct(habit, weekStart) {
+      let done = 0;
+      for (let i = 0; i < 7; i++) if (habit.logs?.[addDays(weekStart, i)]) done++;
+      return Math.round((done / 7) * 100);
+    }
+
+    /* ==========================================================================
+       6. ТЕМА, ВЕЧЕРНИЙ РЕЖИМ, ИКОНКА PWA И НАВИГАЦИЯ
+       ========================================================================== */
+    const ICON_STYLES = {
+      powder: {
+        id: 'powder',
+        name: 'Пудровый голубой',
+        desc: 'Powder Blue и мягкое сияние',
+        grad: ['#DCE8F8', '#C6D8F0', '#E5DDF0'],
+        glowTop: 'rgba(255, 255, 255, 0.62)',
+        glowBottom: 'rgba(247, 214, 218, 0.48)',
+        frame: 'rgba(255, 255, 255, 0.78)',
+        ring: '#7D94B5',
+        accent: '#FFFFFF',
+        ink: '#2A374B',
+        themeHex: '#C6D8F0'
+      },
+      lavender: {
+        id: 'lavender',
+        name: 'Лавандовый рассвет',
+        desc: 'Orchid Petal и нежный розовый',
+        grad: ['#E3DAEE', '#C5B7D1', '#F3E1E5'],
+        glowTop: 'rgba(255, 255, 255, 0.56)',
+        glowBottom: 'rgba(198, 216, 240, 0.45)',
+        frame: 'rgba(255, 255, 255, 0.72)',
+        ring: '#6C5982',
+        accent: '#FFFFFF',
+        ink: '#31263D',
+        themeHex: '#C5B7D1'
+      },
+      cream: {
+        id: 'cream',
+        name: 'Кремовая нежность',
+        desc: 'Cappucino Foam и голубой акцент',
+        grad: ['#FAF9F2', '#F4F3E8', '#DCE8F7'],
+        glowTop: 'rgba(242, 233, 177, 0.45)',
+        glowBottom: 'rgba(247, 214, 218, 0.36)',
+        frame: 'rgba(125, 148, 181, 0.32)',
+        ring: '#7D94B5',
+        accent: '#C6D8F0',
+        ink: '#2A3445',
+        themeHex: '#F4F3E8'
+      }
+    };
+
+    let activeManifestUrl = null;
+
+    function drawAppIconToCanvas(canvas, styleId = 'powder') {
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const pal = ICON_STYLES[styleId] || ICON_STYLES.powder;
+      const w = canvas.width;
+      const h = canvas.height;
+      const s = w / 512;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // 1. Диагональный пастельный фон
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, pal.grad[0]);
+      bg.addColorStop(0.55, pal.grad[1]);
+      bg.addColorStop(1, pal.grad[2]);
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      // 2. Воздушные акварельные блики
+      const g1 = ctx.createRadialGradient(w * 0.22, h * 0.2, 0, w * 0.22, h * 0.2, w * 0.58);
+      g1.addColorStop(0, pal.glowTop);
+      g1.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g1;
+      ctx.fillRect(0, 0, w, h);
+
+      const g2 = ctx.createRadialGradient(w * 0.82, h * 0.84, 0, w * 0.82, h * 0.84, w * 0.56);
+      g2.addColorStop(0, pal.glowBottom);
+      g2.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g2;
+      ctx.fillRect(0, 0, w, h);
+
+      // 3. Тонкая журнальная рамка внутри иконки
+      const pad = 34 * s;
+      const rad = 76 * s;
+      ctx.beginPath();
+      ctx.moveTo(pad + rad, pad);
+      ctx.lineTo(w - pad - rad, pad);
+      ctx.quadraticCurveTo(w - pad, pad, w - pad, pad + rad);
+      ctx.lineTo(w - pad, h - pad - rad);
+      ctx.quadraticCurveTo(w - pad, h - pad, w - pad - rad, h - pad);
+      ctx.lineTo(pad + rad, h - pad);
+      ctx.quadraticCurveTo(pad, h - pad, pad, h - pad - rad);
+      ctx.lineTo(pad, pad + rad);
+      ctx.quadraticCurveTo(pad, pad, pad + rad, pad);
+      ctx.closePath();
+      ctx.strokeStyle = pal.frame;
+      ctx.lineWidth = 3 * s;
+      ctx.stroke();
+
+      const cx = w / 2;
+      const cy = h / 2;
+
+      // 4. Нежное полупрозрачное кольцо ритма
+      ctx.beginPath();
+      ctx.arc(cx, cy, 168 * s, 0, Math.PI * 2);
+      ctx.strokeStyle = pal.frame;
+      ctx.lineWidth = 2.5 * s;
+      ctx.stroke();
+
+      // Акцентная дуга
+      ctx.beginPath();
+      ctx.arc(cx, cy, 168 * s, -Math.PI * 0.68, Math.PI * 0.22);
+      ctx.strokeStyle = pal.ring;
+      ctx.lineWidth = 5 * s;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // 5. Четырёхлучевая звёздочка в верхней правой точке дуги
+      const starX = cx + Math.cos(-Math.PI * 0.24) * 168 * s;
+      const starY = cy + Math.sin(-Math.PI * 0.24) * 168 * s;
+      const sr = 20 * s;
+      ctx.save();
+      ctx.translate(starX, starY);
+      ctx.beginPath();
+      for (let i = 0; i < 4; i++) {
+        const angle = (i * Math.PI) / 2;
+        const nextAngle = angle + Math.PI / 4;
+        const ox = Math.cos(angle) * sr;
+        const oy = Math.sin(angle) * sr;
+        const ix = Math.cos(nextAngle) * (sr * 0.28);
+        const iy = Math.sin(nextAngle) * (sr * 0.28);
+        if (i === 0) ctx.moveTo(ox, oy);
+        else ctx.lineTo(ox, oy);
+        ctx.lineTo(ix, iy);
+      }
+      ctx.closePath();
+      ctx.fillStyle = pal.accent;
+      ctx.fill();
+      ctx.restore();
+
+      // 6. Монограмма «МР» в журнальной антикве Cormorant Garamond
+      ctx.fillStyle = pal.ink;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `600 ${Math.round(146 * s)}px "Cormorant Garamond", Georgia, serif`;
+      ctx.fillText('МР', cx, cy + 6 * s);
+
+      // Маленькая декоративная точка под монограммой
+      ctx.beginPath();
+      ctx.arc(cx, cy + 92 * s, 5.5 * s, 0, Math.PI * 2);
+      ctx.fillStyle = pal.ring;
+      ctx.fill();
+    }
+
+    function applyPwaIconAndManifest() {
+      try {
+        const iconStyle = state.settings.iconStyle || 'powder';
+        const offscreen = document.createElement('canvas');
+        offscreen.width = 512;
+        offscreen.height = 512;
+        drawAppIconToCanvas(offscreen, iconStyle);
+        const pngUrl = offscreen.toDataURL('image/png');
+
+        const fav = document.getElementById('app-favicon');
+        const touch = document.getElementById('app-touch-icon');
+        if (fav) {
+          fav.type = 'image/png';
+          fav.href = pngUrl;
+        }
+        if (touch) touch.href = pngUrl;
+
+        const themeColorMap = {
+          powder: '#C6D8F0',
+          cream: '#F4F3E8',
+          lavender: '#C5B7D1'
+        };
+        const barColor = state.settings.eveningMode
+          ? '#DFD6EB'
+          : (themeColorMap[state.settings.theme] || '#C6D8F0');
+
+        const metaTheme = document.getElementById('app-theme-color');
+        if (metaTheme) metaTheme.setAttribute('content', barColor);
+
+        const isHttp = window.location.protocol === 'http:' || window.location.protocol === 'https:';
+        const pageUrl = isHttp ? window.location.href.split('#')[0] : './';
+        const scopeUrl = isHttp ? (pageUrl.substring(0, pageUrl.lastIndexOf('/') + 1) || window.location.origin + '/') : './';
+
+        const manifestObj = {
+          name: 'Мой ритм — Личный ежедневник',
+          short_name: 'Мой ритм',
+          description: 'Пастельный ежедневник для задач, книг, кино, заметок, цикла и финансов',
+          start_url: pageUrl,
+          scope: scopeUrl,
+          display: 'standalone',
+          orientation: 'portrait-primary',
+          background_color: barColor,
+          theme_color: barColor,
+          icons: [
+            {
+              src: pngUrl,
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any maskable'
+            }
+          ]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+        const manifestUrl = URL.createObjectURL(manifestBlob);
+        const manifestLink = document.getElementById('app-manifest');
+        if (manifestLink) {
+          if (activeManifestUrl) URL.revokeObjectURL(activeManifestUrl);
+          activeManifestUrl = manifestUrl;
+          manifestLink.href = manifestUrl;
+        }
+      } catch (e) {
+        // Тихий fallback при ограничениях песочницы
+      }
+    }
+
+    function renderIconPreviewCanvas() {
+      const c = document.getElementById('icon-preview-canvas');
+      if (c) drawAppIconToCanvas(c, state.settings.iconStyle || 'powder');
+    }
+
+    function setIconStyle(styleId) {
+      state.settings.iconStyle = styleId;
+      saveState();
+      applyPwaIconAndManifest();
+      renderView();
+      const pal = ICON_STYLES[styleId];
+      if (pal) showToast(`Иконка: ${pal.name}`, pal.themeHex);
+    }
+
+    function downloadAppIcon() {
+      try {
+        const c = document.createElement('canvas');
+        c.width = 512;
+        c.height = 512;
+        drawAppIconToCanvas(c, state.settings.iconStyle || 'powder');
+        const link = document.createElement('a');
+        link.download = `moi-ritm-icon-${state.settings.iconStyle || 'powder'}.png`;
+        link.href = c.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        showToast('Иконка 512×512 сохранена в PNG', 'var(--p-delicate-blue)');
+      } catch (e) {
+        showToast('Не удалось скачать иконку');
+      }
+    }
+
+    function applyAtmosphere() {
+      document.documentElement.setAttribute('data-theme', state.settings.theme || 'powder');
+      document.documentElement.setAttribute('data-evening', state.settings.eveningMode ? 'true' : 'false');
+      applyPwaIconAndManifest();
+    }
+
+    function setTheme(themeId) {
+      state.settings.theme = themeId;
+      saveState();
+      renderAll();
+      const map = { powder: 'Пудровый голубой', cream: 'Кремовая пена', lavender: 'Нежная лаванда' };
+      showToast(`Тема: ${map[themeId]}`);
+    }
+
+    function toggleEveningMode() {
+      state.settings.eveningMode = !state.settings.eveningMode;
+      saveState();
+      renderAll();
+      showToast(
+        state.settings.eveningMode
+          ? 'Вечерний режим включён — рабочие задачи скрыты'
+          : 'Вечерний режим выключен',
+        'var(--p-orchid-petal)'
+      );
+    }
+
+    function isModuleEnabled(id) {
+      if (id === 'today' || id === 'settings') return true;
+      return state.settings.modules[id] !== false;
+    }
+
+    function navigate(route) {
+      if (!isModuleEnabled(route)) route = 'today';
+      ui.route = route;
+      closeMoreSheet();
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderNavigation() {
+      const visible = MODULES_META.filter(m => isModuleEnabled(m.id));
+      const ev = state.settings.eveningMode;
+
+      // ПК сайдбар
+      document.getElementById('desktop-nav').innerHTML = visible.map(m => `
+        <button onclick="navigate('${m.id}')" class="nav-btn ${ui.route === m.id ? 'active' : ''}">
+          <span class="nav-icon">${iconSvg(m.icon, 19)}</span>
+          <span>${m.label}</span>
+        </button>
+      `).join('');
+
+      document.getElementById('sidebar-settings-btn').classList.toggle('active', ui.route === 'settings');
+
+      const moon = iconSvg('<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>', 17);
+      const sun = iconSvg('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2"/>', 17);
+
+      document.getElementById('sidebar-evening-icon').innerHTML = ev ? moon : sun;
+      const badge = document.getElementById('sidebar-evening-badge');
+      badge.textContent = ev ? 'Вкл' : 'Выкл';
+      badge.style.background = ev ? 'var(--p-orchid-petal)' : 'rgba(125,148,181,0.16)';
+      badge.style.color = ev ? '#FFFFFF' : 'var(--ink-muted)';
+
+      const mobEv = document.getElementById('mobile-evening-btn');
+      mobEv.innerHTML = ev ? moon : sun;
+      mobEv.style.background = ev ? 'var(--p-orchid-petal)' : 'var(--bg-card)';
+      mobEv.style.color = ev ? '#FFFFFF' : 'var(--ink-main)';
+
+      // Мобильный нижний бар: 4 основных + «Ещё»
+      let primary = visible;
+      let overflow = [];
+      if (visible.length > 5) {
+        primary = visible.slice(0, 4);
+        overflow = visible.slice(4);
+      }
+      const cols = overflow.length ? primary.length + 1 : primary.length;
+      const overflowActive = overflow.some(m => m.id === ui.route) || ui.route === 'settings';
+
+      document.getElementById('mobile-bottom-nav').innerHTML = `
+        <div class="mobile-nav-grid" style="grid-template-columns: repeat(${cols}, minmax(0, 1fr));">
+          ${primary.map(m => `
+            <button onclick="navigate('${m.id}')" class="mnav-btn ${ui.route === m.id ? 'active' : ''}">
+              ${iconSvg(m.icon, 20)}
+              <span>${m.label}</span>
+            </button>
+          `).join('')}
+          ${overflow.length ? `
+            <button onclick="openMoreSheet()" class="mnav-btn ${overflowActive ? 'active' : ''}">
+              ${iconSvg('<circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/><circle cx="5" cy="12" r="1.4"/>', 20)}
+              <span>Ещё</span>
+            </button>
+          ` : ''}
+        </div>
+      `;
+
+      // Шторка «Ещё»
+      const allMore = [
+        ...overflow,
+        { id: 'settings', label: 'Настройки', icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>' }
+      ];
+      document.getElementById('more-sheet-grid').innerHTML = allMore.map(m => `
+        <button onclick="navigate('${m.id}')" class="card" style="padding: 14px; display:flex; align-items:center; gap:10px; background:${ui.route === m.id ? 'var(--p-delicate-blue)' : '#FFFFFF'};">
+          ${iconSvg(m.icon, 19)}
+          <span style="font-size: 18px; font-weight: 600;">${m.label}</span>
+        </button>
+      `).join('');
+    }
+
+    /* ==========================================================================
+       7. РАЗДЕЛ 1: СЕГОДНЯ (ГЛАВНЫЙ ЭКРАН)
+       ========================================================================== */
+    function renderTodayView() {
+      const today = toDateStr();
+      const ev = state.settings.eveningMode;
+      const todayTasksAll = state.tasks.filter(t => t.date === today);
+      const visTasks = ev ? todayTasksAll.filter(t => t.domain !== 'work') : todayTasksAll;
+      const doneTasks = visTasks.filter(t => t.completed).length;
+
+      const visHabits = ev ? state.habits.filter(h => h.domain !== 'work') : state.habits;
+      const doneHabits = visHabits.filter(h => h.logs?.[today]).length;
+
+      const cycleInfo = getCycleOverview(today);
+
+      const nowD = parseDateStr(today);
+      const ym = `${nowD.getFullYear()}-${pad2(nowD.getMonth() + 1)}`;
+      const mTx = state.transactions.filter(t => t.date.startsWith(ym));
+      const mInc = mTx.filter(t => t.type === 'income').reduce((s, x) => s + Number(x.amount), 0);
+      const mExp = mTx.filter(t => t.type === 'expense').reduce((s, x) => s + Number(x.amount), 0);
+      const mBal = mInc - mExp;
+
+      const currentBook = state.books.find(b => b.status === 'reading') || state.books[0];
+      const eveningMovie = state.movies.find(m => m.status === 'planned') || state.movies[0];
+
+      const widgets = [];
+      if (isModuleEnabled('tasks')) {
+        const pct = visTasks.length ? Math.round((doneTasks / visTasks.length) * 100) : 0;
+        widgets.push(`
+          <div class="card clickable" onclick="navigate('tasks')" style="background: linear-gradient(145deg, #FFFFFF, rgba(247,214,218,0.28));">
+            <div class="row-between" style="margin-bottom: 6px;">
+              <span class="text-sm muted">Задачи на день</span>
+              <span class="dot" style="background: var(--p-marys-rose-ink);"></span>
+            </div>
+            <div style="font-size: 32px; font-weight: 700; line-height: 1.1;">${doneTasks} <span class="muted" style="font-size: 19px; font-weight: 500;">из ${visTasks.length}</span></div>
+            <div class="progress-track" style="margin-top: 10px;">
+              <div class="progress-fill" style="width:${pct}%; background: #D99BA5;"></div>
+            </div>
+          </div>
+        `);
+      }
+
+      if (isModuleEnabled('habits')) {
+        const pct = visHabits.length ? Math.round((doneHabits / visHabits.length) * 100) : 0;
+        widgets.push(`
+          <div class="card clickable" onclick="navigate('habits')" style="background: linear-gradient(145deg, #FFFFFF, rgba(181,211,190,0.3));">
+            <div class="row-between" style="margin-bottom: 6px;">
+              <span class="text-sm muted">Трекеры</span>
+              <span class="dot" style="background: var(--p-gossamer-green-ink);"></span>
+            </div>
+            <div style="font-size: 32px; font-weight: 700; line-height: 1.1;">${doneHabits} <span class="muted" style="font-size: 19px; font-weight: 500;">из ${visHabits.length}</span></div>
+            <div class="progress-track" style="margin-top: 10px;">
+              <div class="progress-fill" style="width:${pct}%; background: var(--p-gossamer-green);"></div>
+            </div>
+          </div>
+        `);
+      }
+
+      if (isModuleEnabled('cycle')) {
+        widgets.push(`
+          <div class="card clickable" onclick="navigate('cycle')" style="background: linear-gradient(145deg, #FFFFFF, rgba(243,225,229,0.52));">
+            <div class="row-between" style="margin-bottom: 6px;">
+              <span class="text-sm muted">Цикл</span>
+              <span class="dot" style="background: #C88C96;"></span>
+            </div>
+            ${cycleInfo.hasData ? `
+              <div style="font-size: 30px; font-weight: 700; line-height: 1.1;">День ${cycleInfo.dayOfCycle}</div>
+              <div style="margin-top: 8px;">
+                <span class="badge" style="background:${cycleInfo.phase.bg}; color:${cycleInfo.phase.ink};">${cycleInfo.phase.short}</span>
+              </div>
+            ` : `<div class="muted" style="margin-top: 6px;">Настроить цикл</div>`}
+          </div>
+        `);
+      }
+
+      if (isModuleEnabled('finance')) {
+        widgets.push(`
+          <div class="card clickable" onclick="navigate('finance')" style="background: linear-gradient(145deg, #FFFFFF, rgba(198,216,240,0.42));">
+            <div class="row-between" style="margin-bottom: 6px;">
+              <span class="text-sm muted">Баланс · ${MONTHS_RU[nowD.getMonth()].slice(0, 3)}</span>
+              <span class="dot" style="background: var(--p-endless-sky);"></span>
+            </div>
+            <div style="font-size: 28px; font-weight: 700; line-height: 1.15;">${formatCurrency(mBal)}</div>
+            <div class="text-xs muted" style="margin-top: 6px;">Расходы: ${formatCurrency(mExp)}</div>
+          </div>
+        `);
+      }
+
+      if (isModuleEnabled('books')) {
+        widgets.push(`
+          <div class="card clickable" onclick="navigate('books')" style="background: linear-gradient(145deg, #FFFFFF, rgba(197,183,209,0.3));">
+            <div class="row-between" style="margin-bottom: 6px;">
+              <span class="text-sm muted">${currentBook?.status === 'reading' ? 'Читаю сейчас' : 'Читательский дневник'}</span>
+              <span class="dot" style="background: var(--p-orchid-petal-ink);"></span>
+            </div>
+            ${currentBook ? `
+              <div style="font-size: 21px; font-weight: 700; line-height: 1.2;">${esc(currentBook.title)}</div>
+              <div class="text-sm muted italic" style="margin-top: 4px;">${esc(currentBook.author)}</div>
+            ` : `<div class="muted">Добавить книгу</div>`}
+          </div>
+        `);
+      }
+
+      if (isModuleEnabled('movies')) {
+        widgets.push(`
+          <div class="card clickable" onclick="navigate('movies')" style="background: linear-gradient(145deg, #FFFFFF, rgba(210,193,200,0.34));">
+            <div class="row-between" style="margin-bottom: 6px;">
+              <span class="text-sm muted">${eveningMovie?.status === 'planned' ? 'Фильм на вечер' : 'Моё кино'}</span>
+              <span class="dot" style="background: var(--p-hushed-violet-ink);"></span>
+            </div>
+            ${eveningMovie ? `
+              <div style="font-size: 21px; font-weight: 700; line-height: 1.2;">${esc(eveningMovie.title)}</div>
+              <div class="text-sm muted" style="margin-top: 4px;">${esc(eveningMovie.genre)}${eveningMovie.year ? ` · ${esc(eveningMovie.year)}` : ''}</div>
+            ` : `<div class="muted">Добавить фильм</div>`}
+          </div>
+        `);
+      }
+
+      const domainsToShow = ev ? ['personal', 'interests'] : ['work', 'personal', 'interests'];
+
+      return `
+        <div class="view-enter stack">
+          <!-- Приветствие и Вечерний режим -->
+          <div class="page-header" style="margin-bottom: 4px;">
+            <div>
+              <div class="eyebrow">${formatHumanDate(today, true)}</div>
+              <h1 class="page-title">${getGreeting()}</h1>
+            </div>
+
+            <div class="card row" style="padding: 10px 16px; border-radius: 18px;">
+              <div>
+                <div style="font-size: 17px; font-weight: 700; line-height: 1.1;">Вечерний режим</div>
+                <div class="text-xs muted">${ev ? 'Работа скрыта · уютный лавандовый тон' : 'Скрыть рабочие дела на вечер'}</div>
+              </div>
+              <button onclick="toggleEveningMode()" class="toggle ${ev ? 'on-orchid' : ''}" aria-label="Переключить вечерний режим">
+                <span class="toggle-knob"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Виджеты сводки дня -->
+          ${widgets.length ? `<div class="grid-widgets">${widgets.join('')}</div>` : ''}
+
+          <!-- Задачи на сегодня по сферам -->
+          ${isModuleEnabled('tasks') ? `
+            <section>
+              <div class="row-between" style="margin-bottom: 14px;">
+                <h2 class="section-title">План на сегодня</h2>
+                <button onclick="openTaskModal()" class="btn btn-secondary btn-sm">
+                  ${iconSvg('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>', 16)}
+                  <span>Новая задача</span>
+                </button>
+              </div>
+
+              <div class="${ev ? 'grid-2' : 'grid-3'}">
+                ${domainsToShow.map(domId => {
+                  const dom = DOMAINS[domId];
+                  const items = todayTasksAll
+                    .filter(t => t.domain === domId)
+                    .sort((a, b) => Number(a.completed) - Number(b.completed) || (b.priority === 'high') - (a.priority === 'high'));
+                  return `
+                    <div class="card" style="display:flex; flex-direction:column;">
+                      <div class="card-header">
+                        <div class="row" style="gap: 8px;">
+                          <span class="dot" style="background:${dom.accent}; width:10px; height:10px;"></span>
+                          <h3 style="font-size: 22px;">${dom.label}</h3>
+                        </div>
+                        <span class="badge" style="background:${dom.softBg}; color:${dom.ink};">${items.filter(x => x.completed).length}/${items.length}</span>
+                      </div>
+
+                      <div class="stack-sm" style="flex:1;">
+                        ${items.length ? items.map(renderCompactTask).join('') : `<p class="muted italic text-sm" style="text-align:center; padding: 14px 0;">На сегодня тихо и свободно</p>`}
+                      </div>
+
+                      <form onsubmit="handleQuickTask(event, '${domId}', '${today}')" style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); display:flex; gap:8px;">
+                        <input type="text" name="title" placeholder="+ Добавить в «${dom.label}»..." style="flex:1; background:transparent; border:none; outline:none; font-size:17px;" />
+                        <button type="submit" class="icon-btn sm ghost" title="Добавить">
+                          ${iconSvg('<polyline points="9 18 15 12 9 6"/>', 17)}
+                        </button>
+                      </form>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </section>
+          ` : ''}
+
+          <!-- Быстрая отметка привычек -->
+          ${isModuleEnabled('habits') ? `
+            <section class="card">
+              <div class="row-between" style="margin-bottom: 14px;">
+                <div>
+                  <h2 class="section-title">Привычки дня</h2>
+                  <p class="text-sm muted">Отмечайте в одно касание</p>
+                </div>
+                <button onclick="navigate('habits')" class="btn btn-secondary btn-sm">Вся неделя →</button>
+              </div>
+              ${visHabits.length ? `
+                <div class="grid-2">
+                  ${visHabits.map(h => {
+                    const checked = Boolean(h.logs?.[today]);
+                    const streak = getHabitStreak(h);
+                    return `
+                      <button onclick="toggleHabitDay('${h.id}', '${today}')" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border-radius:14px; border:1px solid ${checked ? '#7AA688' : 'var(--border)'}; background:${checked ? 'rgba(181,211,190,0.45)' : '#FFFFFF'}; text-align:left;">
+                        <div class="row" style="gap:12px;">
+                          <span class="habit-check-btn ${checked ? 'done' : ''}" style="width:28px;height:28px;border-radius:9px;">
+                            ${checked ? iconSvg('<polyline points="20 6 9 17 4 12"/>', 15) : ''}
+                          </span>
+                          <div>
+                            <div style="font-size:18px; font-weight:600;" class="${checked ? 'line-through' : ''}">${esc(h.name)}</div>
+                            <div class="text-xs muted">${streak > 0 ? `Серия: ${pluralDays(streak)}` : 'Начать серию сегодня'}</div>
+                          </div>
+                        </div>
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+              ` : `<p class="muted">Добавьте первую привычку в разделе «Трекеры».</p>`}
+            </section>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function renderCompactTask(task) {
+      const dom = DOMAINS[task.domain] || DOMAINS.personal;
+      return `
+        <div style="display:flex; align-items:flex-start; gap:10px;">
+          <button onclick="toggleTaskDone('${task.id}')" class="task-checkbox ${task.completed ? 'checked' : ''}" style="${task.completed ? '' : `border-color:${dom.accent};`}" aria-label="Выполнить">
+            ${task.completed ? iconSvg('<polyline points="20 6 9 17 4 12"/>', 13) : ''}
+          </button>
+          <div style="flex:1; cursor:pointer;" onclick="openTaskModal('${task.id}')">
+            <div style="font-size:18px; line-height:1.3;" class="${task.completed ? 'line-through' : ''}">
+              ${task.priority === 'high' && !task.completed ? `<span class="dot" style="background:var(--p-pastel-yellow); border:1px solid #B99B3B; margin-right:6px;" title="Важное"></span>` : ''}
+              ${esc(task.title)}
+            </div>
+            <div class="row" style="gap:6px; margin-top:4px; flex-wrap:wrap;">
+              ${task.time ? `<span class="text-xs muted">${esc(task.time)}</span>` : ''}
+              ${task.subcategory ? `<span class="badge" style="background:var(--p-cappucino-foam); color:var(--ink-muted); font-size:13px; padding:1px 8px;">${esc(task.subcategory)}</span>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function handleQuickTask(e, domain, dateStr) {
+      e.preventDefault();
+      const inp = e.target.querySelector('input[name="title"]');
+      const title = inp.value.trim();
+      if (!title) return;
+      state.tasks.unshift({
+        id: uid('t'), title, domain,
+        subcategory: DOMAINS[domain].subcategories[0],
+        date: dateStr, time: '', priority: 'normal', note: '', completed: false
+      });
+      saveState();
+      renderView();
+      showToast('Задача добавлена', DOMAINS[domain].accent);
+    }
+
+    /* ==========================================================================
+       8. РАЗДЕЛ 2: ЗАДАЧИ
+       ========================================================================== */
+    function renderTasksView() {
+      const today = toDateStr();
+      const ev = state.settings.eveningMode;
+      const movable = state.tasks.filter(t => !t.completed && t.date <= today && (!ev || t.domain !== 'work')).length;
+      const list = getFilteredTasks();
+
+      const spaces = [
+        { id: 'all', label: 'Все сферы', color: 'var(--p-endless-sky)' },
+        { id: 'work', label: 'Работа', color: DOMAINS.work.accent },
+        { id: 'personal', label: 'Личное', color: DOMAINS.personal.accent },
+        { id: 'interests', label: 'Интересы', color: DOMAINS.interests.accent }
+      ];
+
+      return `
+        <div class="view-enter stack">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Три сферы жизни</div>
+              <h1 class="page-title">Задачи</h1>
+            </div>
+            <div class="row" style="flex-wrap:wrap;">
+              ${movable > 0 ? `
+                <button onclick="postponeTasksToTomorrow()" class="btn btn-secondary btn-sm">
+                  ${iconSvg('<polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/>', 16)}
+                  <span>Перенести на завтра (${movable})</span>
+                </button>
+              ` : ''}
+              <button onclick="openTaskModal()" class="btn btn-primary btn-sm">
+                ${iconSvg('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>', 16)}
+                <span>Добавить задачу</span>
+              </button>
+            </div>
+          </div>
+
+          ${ev ? `
+            <div class="card row-between" style="padding:12px 18px; background: rgba(197,183,209,0.28);">
+              <span class="text-sm">Включён вечерний режим — рабочие дела скрыты в общем списке.</span>
+              <button onclick="toggleEveningMode()" class="btn btn-secondary btn-sm">Выключить</button>
+            </div>
+          ` : ''}
+
+          <div class="row-between">
+            <div class="pills-row">
+              ${spaces.map(sp => `
+                <button onclick="ui.taskDomain='${sp.id}'; renderView();" class="pill-tab ${ui.taskDomain === sp.id ? 'active' : ''}">
+                  ${sp.id !== 'all' ? `<span class="dot" style="background:${ui.taskDomain === sp.id ? '#FFFFFF' : sp.color};"></span>` : ''}
+                  <span>${sp.label}</span>
+                </button>
+              `).join('')}
+            </div>
+
+            <div class="pills-row">
+              ${[['active', 'Активные'], ['completed', 'Выполненные'], ['all', 'Все']].map(([st, lbl]) => `
+                <button onclick="ui.taskStatus='${st}'; renderView();" class="pill-tab ${ui.taskStatus === st ? 'active' : ''}" style="padding:6px 13px; font-size:15px;">${lbl}</button>
+              `).join('')}
+            </div>
+          </div>
+
+          <input type="text" class="input" value="${esc(ui.taskSearch)}" oninput="ui.taskSearch=this.value; updateTasksListDOM();" placeholder="Поиск по задачам, подкатегориям и заметкам..." />
+
+          <div id="tasks-list-dom" class="stack-sm">
+            ${renderTasksListHTML(list, today)}
+          </div>
+        </div>
+      `;
+    }
+
+    function getFilteredTasks() {
+      const ev = state.settings.eveningMode;
+      let list = [...state.tasks];
+      if (ev && ui.taskDomain === 'all') list = list.filter(t => t.domain !== 'work');
+      else if (ui.taskDomain !== 'all') list = list.filter(t => t.domain === ui.taskDomain);
+      if (ui.taskStatus === 'active') list = list.filter(t => !t.completed);
+      if (ui.taskStatus === 'completed') list = list.filter(t => t.completed);
+      if (ui.taskSearch.trim()) {
+        const q = ui.taskSearch.trim().toLowerCase();
+        list = list.filter(t => t.title.toLowerCase().includes(q) || (t.subcategory || '').toLowerCase().includes(q) || (t.note || '').toLowerCase().includes(q));
+      }
+      return list.sort((a, b) => Number(a.completed) - Number(b.completed) || a.date.localeCompare(b.date) || (b.priority === 'high') - (a.priority === 'high'));
+    }
+
+    function updateTasksListDOM() {
+      const box = document.getElementById('tasks-list-dom');
+      if (box) box.innerHTML = renderTasksListHTML(getFilteredTasks(), toDateStr());
+    }
+
+    function renderTasksListHTML(list, today) {
+      if (!list.length) {
+        return `<div class="empty-box"><h3 style="font-size:24px;">Здесь пока свободно</h3><p class="muted" style="margin-top:6px;">Задач по выбранному фильтру нет.</p></div>`;
+      }
+      return list.map(t => {
+        const dom = DOMAINS[t.domain] || DOMAINS.personal;
+        const overdue = !t.completed && t.date < today;
+        return `
+          <div class="card" style="padding: 16px 18px; display:flex; align-items:flex-start; gap:14px;">
+            <button onclick="toggleTaskDone('${t.id}')" class="task-checkbox ${t.completed ? 'checked' : ''}" style="${t.completed ? '' : `border-color:${dom.accent};`}">
+              ${t.completed ? iconSvg('<polyline points="20 6 9 17 4 12"/>', 13) : ''}
+            </button>
+            <div style="flex:1; min-width:0;">
+              <div class="row" style="flex-wrap:wrap; gap:8px;">
+                <span style="font-size:19px; font-weight:600;" class="${t.completed ? 'line-through' : ''}">${esc(t.title)}</span>
+                ${t.priority === 'high' ? `<span class="badge" style="background:var(--p-pastel-yellow); color:var(--p-pastel-yellow-ink);">Важно</span>` : ''}
+              </div>
+              ${t.note ? `<p class="text-sm muted" style="margin-top:4px;">${esc(t.note)}</p>` : ''}
+              <div class="row" style="flex-wrap:wrap; gap:8px; margin-top:8px;">
+                <span class="badge" style="background:${dom.softBg}; color:${dom.ink};">${dom.label}</span>
+                ${t.subcategory ? `<span class="badge" style="background:var(--p-cappucino-foam); color:var(--ink-muted);">${esc(t.subcategory)}</span>` : ''}
+                <span class="text-sm ${overdue ? '' : 'muted'}" style="${overdue ? 'color:var(--p-marys-rose-ink); font-weight:700;' : ''}">
+                  ${overdue ? 'Просрочено · ' : ''}${formatShortDate(t.date)}${t.time ? `, ${esc(t.time)}` : ''}
+                </span>
+              </div>
+            </div>
+            <div class="row" style="gap:4px;">
+              <button onclick="openTaskModal('${t.id}')" class="icon-btn sm ghost" title="Редактировать">${iconSvg('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>', 16)}</button>
+              <button onclick="deleteTask('${t.id}')" class="icon-btn sm ghost danger" title="Удалить">${iconSvg('<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>', 16)}</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleTaskDone(id) {
+      const t = state.tasks.find(x => x.id === id);
+      if (!t) return;
+      t.completed = !t.completed;
+      saveState();
+      renderView();
+    }
+
+    function postponeTasksToTomorrow() {
+      const today = toDateStr(), tomorrow = addDays(today, 1), ev = state.settings.eveningMode;
+      let count = 0;
+      state.tasks.forEach(t => {
+        if (!t.completed && t.date <= today && (!ev || t.domain !== 'work')) { t.date = tomorrow; count++; }
+      });
+      if (count) { saveState(); renderView(); showToast(`Перенесено на завтра: ${count}`); }
+    }
+
+    async function deleteTask(id) {
+      if (!(await askConfirm('Удалить задачу?', 'Эта задача исчезнет из вашего списка.'))) return;
+      state.tasks = state.tasks.filter(t => t.id !== id);
+      saveState();
+      renderView();
+      showToast('Задача удалена');
+    }
+
+    function openTaskModal(taskId = null, defaultDate = null) {
+      const ex = taskId ? state.tasks.find(t => t.id === taskId) : null;
+      const dom = ex ? ex.domain : (ui.taskDomain !== 'all' ? ui.taskDomain : 'personal');
+      const subcats = DOMAINS[dom].subcategories;
+
+      openModal(`
+        <div class="row-between" style="margin-bottom:18px;">
+          <h3 style="font-size:28px;">${ex ? 'Редактировать задачу' : 'Новая задача'}</h3>
+          <button onclick="closeModal()" class="icon-btn sm ghost">${iconSvg('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>', 19)}</button>
+        </div>
+        <form onsubmit="saveTaskForm(event, '${ex ? ex.id : ''}')" class="stack-sm">
+          <div>
+            <label class="field-label">Название</label>
+            <input type="text" name="title" class="input" required value="${esc(ex?.title || '')}" placeholder="Что хочется успеть?" autofocus />
+          </div>
+          <div class="grid-2">
+            <div>
+              <label class="field-label">Сфера</label>
+              <select name="domain" class="input" onchange="updateSubcatSelect(this.value)">
+                <option value="work" ${dom === 'work' ? 'selected' : ''}>Работа</option>
+                <option value="personal" ${dom === 'personal' ? 'selected' : ''}>Личное</option>
+                <option value="interests" ${dom === 'interests' ? 'selected' : ''}>Интересы</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Подкатегория</label>
+              <select name="subcategory" id="modal-subcat" class="input">
+                ${subcats.map(s => `<option value="${esc(s)}" ${ex?.subcategory === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="grid-3">
+            <div>
+              <label class="field-label">Дата</label>
+              <input type="date" name="date" class="input" required value="${ex ? ex.date : (defaultDate || toDateStr())}" />
+            </div>
+            <div>
+              <label class="field-label">Время</label>
+              <input type="time" name="time" class="input" value="${esc(ex?.time || '')}" />
+            </div>
+            <div>
+              <label class="field-label">Приоритет</label>
+              <select name="priority" class="input">
+                <option value="normal" ${(ex?.priority || 'normal') === 'normal' ? 'selected' : ''}>Обычный</option>
+                <option value="high" ${ex?.priority === 'high' ? 'selected' : ''}>Важный</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Заметка</label>
+            <textarea name="note" class="input" rows="3" placeholder="Дополнительные детали...">${esc(ex?.note || '')}</textarea>
+          </div>
+          <div class="row" style="justify-content:flex-end; margin-top:8px;">
+            <button type="button" onclick="closeModal()" class="btn btn-secondary btn-sm">Отмена</button>
+            <button type="submit" class="btn btn-primary btn-sm">${ex ? 'Сохранить' : 'Создать'}</button>
+          </div>
+        </form>
+      `);
+    }
+
+    function updateSubcatSelect(domId) {
+      const sel = document.getElementById('modal-subcat');
+      if (sel) sel.innerHTML = DOMAINS[domId].subcategories.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+    }
+
+    function saveTaskForm(e, existingId) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const data = {
+        title: fd.get('title').trim(),
+        domain: fd.get('domain'),
+        subcategory: fd.get('subcategory'),
+        date: fd.get('date'),
+        time: fd.get('time') || '',
+        priority: fd.get('priority'),
+        note: fd.get('note').trim()
+      };
+      if (!data.title) return;
+      if (existingId) {
+        const idx = state.tasks.findIndex(t => t.id === existingId);
+        if (idx !== -1) state.tasks[idx] = { ...state.tasks[idx], ...data };
+        showToast('Задача обновлена');
+      } else {
+        state.tasks.unshift({ id: uid('t'), ...data, completed: false });
+        showToast('Задача создана');
+      }
+      saveState(); closeModal(); renderView();
+    }
+
+    /* ==========================================================================
+       9. РАЗДЕЛ 3: КАЛЕНДАРЬ
+       ========================================================================== */
+    function renderCalendarView() {
+      const today = toDateStr();
+      const y = ui.calYear, m = ui.calMonth;
+      const firstDay = new Date(y, m, 1);
+      const daysInMonth = new Date(y, m + 1, 0).getDate();
+      const offset = (firstDay.getDay() + 6) % 7;
+      const showCycle = isModuleEnabled('cycle') && state.settings.showCycleOnCalendar;
+      const ev = state.settings.eveningMode;
+
+      const tasksByDate = {};
+      state.tasks.forEach(t => {
+        if (ev && t.domain === 'work') return;
+        (tasksByDate[t.date] = tasksByDate[t.date] || []).push(t);
+      });
+
+      const cells = [];
+      for (let i = 0; i < offset; i++) cells.push('<div></div>');
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dStr = `${y}-${pad2(m + 1)}-${pad2(d)}`;
+        const dayTasks = tasksByDate[dStr] || [];
+        const doms = [...new Set(dayTasks.map(t => t.domain))];
+        const cyc = showCycle ? getCycleDateStatus(dStr) : null;
+        const cCls = cyc?.type === 'logged' ? 'cycle-logged' : cyc?.type === 'predicted' ? 'cycle-predicted' : cyc?.type === 'ovulation' ? 'cycle-ovulation' : '';
+        cells.push(`
+          <button onclick="ui.calSelectedDate='${dStr}'; renderView();" class="cal-cell ${cCls} ${dStr === ui.calSelectedDate ? 'selected' : ''}">
+            <span class="cal-day-num ${dStr === today ? 'today' : ''}">${d}</span>
+            <div class="row" style="gap:4px; flex-wrap:wrap;">
+              ${doms.map(id => `<span class="dot" style="width:7px;height:7px;background:${DOMAINS[id].accent};"></span>`).join('')}
+            </div>
+          </button>
+        `);
+      }
+
+      const sel = ui.calSelectedDate;
+      const selTasks = (tasksByDate[sel] || []).sort((a, b) => Number(a.completed) - Number(b.completed));
+      const selCyc = isModuleEnabled('cycle') ? getCycleDateStatus(sel) : null;
+
+      return `
+        <div class="view-enter stack">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Планирование месяца</div>
+              <h1 class="page-title">${MONTHS_RU[m]} ${y}</h1>
+            </div>
+            <div class="row" style="flex-wrap:wrap;">
+              ${isModuleEnabled('cycle') ? `
+                <div class="card row" style="padding: 8px 14px; border-radius: 14px;">
+                  <span class="text-sm">Цикл в календаре</span>
+                  <button onclick="toggleCycleOnCalendar()" class="toggle ${showCycle ? 'on-rose' : ''}" style="transform:scale(0.85);">
+                    <span class="toggle-knob"></span>
+                  </button>
+                </div>
+              ` : ''}
+              <div class="card row" style="padding: 6px; border-radius: 14px; gap: 4px;">
+                <button onclick="shiftCalMonth(-1)" class="icon-btn sm ghost">${iconSvg('<polyline points="15 18 9 12 15 6"/>', 17)}</button>
+                <button onclick="jumpCalToday()" class="btn btn-secondary btn-sm" style="border:none;">Сегодня</button>
+                <button onclick="shiftCalMonth(1)" class="icon-btn sm ghost">${iconSvg('<polyline points="9 18 15 12 9 6"/>', 17)}</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-split">
+            <div class="card">
+              <div class="cal-grid" style="margin-bottom: 8px;">
+                ${WEEKDAYS_SHORT_MON.map(w => `<div class="cal-weekday">${w}</div>`).join('')}
+              </div>
+              <div class="cal-grid">${cells.join('')}</div>
+              <div class="row" style="flex-wrap:wrap; gap:14px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border); font-size:14px;">
+                ${!ev ? `<span class="row" style="gap:6px;"><span class="dot" style="background:${DOMAINS.work.accent};"></span>Работа</span>` : ''}
+                <span class="row" style="gap:6px;"><span class="dot" style="background:${DOMAINS.personal.accent};"></span>Личное</span>
+                <span class="row" style="gap:6px;"><span class="dot" style="background:${DOMAINS.interests.accent};"></span>Интересы</span>
+                ${showCycle ? `
+                  <span class="row" style="gap:6px;"><span class="dot" style="background:var(--p-marys-rose);border:1px solid #CE959E;"></span>Менструация</span>
+                  <span class="row" style="gap:6px;"><span class="dot" style="background:var(--p-orchid-petal);"></span>Овуляция</span>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="card stack-sm">
+              <div style="padding-bottom:12px; border-bottom:1px solid var(--border);">
+                <div class="eyebrow">Выбранная дата</div>
+                <h3 style="font-size:26px;">${formatHumanDate(sel, true)}</h3>
+                ${selCyc ? `
+                  <div style="margin-top:8px;">
+                    <span class="badge" style="background:${selCyc.type === 'ovulation' ? 'var(--p-orchid-petal)' : selCyc.type === 'normal' ? selCyc.phase.bg : 'var(--p-marys-rose)'}; color:${selCyc.type === 'ovulation' ? '#FFFFFF' : selCyc.type === 'normal' ? selCyc.phase.ink : 'var(--p-marys-rose-ink)'};">
+                      ${selCyc.label || `День ${selCyc.dayIn} · ${selCyc.phase.short}`}
+                    </span>
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="stack-sm">
+                ${selTasks.length ? selTasks.map(renderCompactTask).join('') : `<p class="muted italic text-sm" style="text-align:center; padding: 12px 0;">На этот день задач пока нет</p>`}
+              </div>
+
+              <form onsubmit="handleCalAddTask(event, '${sel}')" class="stack-sm" style="padding-top:12px; border-top:1px solid var(--border);">
+                <div style="font-size:16px; font-weight:700;">Добавить задачу на ${formatShortDate(sel).toLowerCase()}</div>
+                <input type="text" name="title" class="input" required placeholder="Название задачи..." />
+                <div class="row">
+                  <select name="domain" class="input" style="flex:1;">
+                    ${!ev ? '<option value="work">Работа</option>' : ''}
+                    <option value="personal" selected>Личное</option>
+                    <option value="interests">Интересы</option>
+                  </select>
+                  <input type="time" name="time" class="input" style="width:128px;" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">Добавить на эту дату</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function shiftCalMonth(d) { const dt = new Date(ui.calYear, ui.calMonth + d, 1); ui.calYear = dt.getFullYear(); ui.calMonth = dt.getMonth(); renderView(); }
+    function jumpCalToday() { const now = new Date(); ui.calYear = now.getFullYear(); ui.calMonth = now.getMonth(); ui.calSelectedDate = toDateStr(now); renderView(); }
+    function toggleCycleOnCalendar() { state.settings.showCycleOnCalendar = !state.settings.showCycleOnCalendar; saveState(); renderView(); }
+    function handleCalAddTask(e, dateStr) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const title = fd.get('title').trim();
+      if (!title) return;
+      const domain = fd.get('domain');
+      state.tasks.unshift({ id: uid('t'), title, domain, subcategory: DOMAINS[domain].subcategories[0], date: dateStr, time: fd.get('time') || '', priority: 'normal', note: '', completed: false });
+      saveState(); renderView(); showToast(`Задача добавлена на ${formatHumanDate(dateStr)}`);
+    }
+
+    /* ==========================================================================
+       10. РАЗДЕЛ 4: ТРЕКЕРЫ ПРИВЫЧЕК (GOSSAMER GREEN)
+       ========================================================================== */
+    function renderHabitsView() {
+      const today = toDateStr();
+      const ws = ui.habitWeekStart;
+      const days = Array.from({ length: 7 }, (_, i) => addDays(ws, i));
+      const totalPos = state.habits.length * 7;
+      let totalDone = 0;
+      state.habits.forEach(h => days.forEach(d => { if (h.logs?.[d]) totalDone++; }));
+      const weekPct = totalPos ? Math.round((totalDone / totalPos) * 100) : 0;
+
+      return `
+        <div class="view-enter stack">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Ежедневная забота</div>
+              <h1 class="page-title">Трекеры</h1>
+            </div>
+            <div class="row" style="flex-wrap:wrap;">
+              <div class="card row" style="padding: 6px; border-radius: 14px; gap: 4px;">
+                <button onclick="ui.habitWeekStart=addDays(ui.habitWeekStart,-7); renderView();" class="icon-btn sm ghost">${iconSvg('<polyline points="15 18 9 12 15 6"/>', 17)}</button>
+                <button onclick="ui.habitWeekStart=getMondayOfWeek(toDateStr()); renderView();" class="btn btn-secondary btn-sm" style="border:none;">${formatHumanDate(days[0])} — ${formatHumanDate(days[6])}</button>
+                <button onclick="ui.habitWeekStart=addDays(ui.habitWeekStart,7); renderView();" class="icon-btn sm ghost">${iconSvg('<polyline points="9 18 15 12 9 6"/>', 17)}</button>
+              </div>
+              <button onclick="openHabitModal()" class="btn btn-primary btn-sm">
+                ${iconSvg('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>', 16)}
+                <span>Новая привычка</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card row-between" style="background: linear-gradient(135deg, #FFFFFF, rgba(181,211,190,0.34));">
+            <div>
+              <div class="text-sm muted">Выполнение за неделю</div>
+              <div style="font-size:32px; font-weight:700;">${weekPct}% <span class="muted" style="font-size:18px; font-weight:500;">(${totalDone} из ${totalPos})</span></div>
+            </div>
+            <div class="progress-track" style="max-width: 280px; height: 9px;">
+              <div class="progress-fill" style="width:${weekPct}%; background: var(--p-gossamer-green);"></div>
+            </div>
+          </div>
+
+          ${state.habits.length ? `
+            <div class="card" style="padding: 8px 14px;">
+              <div class="table-wrap">
+                <table class="habits-table">
+                  <thead>
+                    <tr>
+                      <th style="text-align:left; font-size:16px;" class="muted">Привычка</th>
+                      ${days.map((d, i) => `
+                        <th style="text-align:center;">
+                          <div class="text-xs muted">${WEEKDAYS_SHORT_MON[i]}</div>
+                          <div class="cal-day-num ${d === today ? 'today' : ''}" style="margin-top:4px;">${parseDateStr(d).getDate()}</div>
+                        </th>
+                      `).join('')}
+                      <th style="text-align:right; font-size:16px;" class="muted">Серия / %</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${state.habits.map(h => {
+                      const streak = getHabitStreak(h);
+                      const pct = getHabitWeekPct(h, ws);
+                      return `
+                        <tr>
+                          <td>
+                            <div style="font-size:19px; font-weight:600;">${esc(h.name)}</div>
+                            <div class="text-xs muted">${DOMAINS[h.domain]?.label || 'Личное'}</div>
+                          </td>
+                          ${days.map(d => {
+                            const done = Boolean(h.logs?.[d]);
+                            return `
+                              <td style="text-align:center;">
+                                <button onclick="toggleHabitDay('${h.id}', '${d}')" class="habit-check-btn ${done ? 'done' : ''}" aria-label="Отметить ${d}">
+                                  ${done ? iconSvg('<polyline points="20 6 9 17 4 12"/>', 16) : ''}
+                                </button>
+                              </td>
+                            `;
+                          }).join('')}
+                          <td style="text-align:right; white-space:nowrap;">
+                            <div class="row" style="justify-content:flex-end; gap:10px;">
+                              <div>
+                                <div style="font-size:17px; font-weight:700;">${pct}%</div>
+                                <div class="text-xs muted">${streak > 0 ? `Серия ${pluralDays(streak)}` : '0 дней'}</div>
+                              </div>
+                              <button onclick="deleteHabit('${h.id}')" class="icon-btn sm ghost danger" title="Удалить">${iconSvg('<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>', 16)}</button>
+                            </div>
+                          </td>
+                        </tr>
+                      `;
+                    }).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ` : `
+            <div class="empty-box">
+              <h3 style="font-size:24px;">Привычек пока нет</h3>
+              <p class="muted" style="margin:6px 0 14px;">Добавьте первую маленькую рутину, которую хочется бережно повторять.</p>
+              <button onclick="openHabitModal()" class="btn btn-primary btn-sm">Создать привычку</button>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    function toggleHabitDay(id, dateStr) {
+      const h = state.habits.find(x => x.id === id);
+      if (!h) return;
+      h.logs = h.logs || {};
+      if (h.logs[dateStr]) delete h.logs[dateStr];
+      else h.logs[dateStr] = true;
+      saveState();
+      renderView();
+    }
+
+    async function deleteHabit(id) {
+      if (!(await askConfirm('Удалить привычку?', 'История отметок по этой привычке будет удалена.'))) return;
+      state.habits = state.habits.filter(h => h.id !== id);
+      saveState(); renderView(); showToast('Привычка удалена');
+    }
+
+    function openHabitModal() {
+      openModal(`
+        <div class="row-between" style="margin-bottom:18px;">
+          <h3 style="font-size:28px;">Новая привычка</h3>
+          <button onclick="closeModal()" class="icon-btn sm ghost">${iconSvg('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>', 19)}</button>
+        </div>
+        <form onsubmit="saveHabitForm(event)" class="stack-sm">
+          <div>
+            <label class="field-label">Название</label>
+            <input type="text" name="name" class="input" required placeholder="Например: 15 минут растяжки утром" autofocus />
+          </div>
+          <div>
+            <label class="field-label">Сфера</label>
+            <select name="domain" class="input">
+              <option value="personal">Личное</option>
+              <option value="interests">Интересы</option>
+              <option value="work">Работа</option>
+            </select>
+          </div>
+          <div class="row" style="justify-content:flex-end; margin-top:8px;">
+            <button type="button" onclick="closeModal()" class="btn btn-secondary btn-sm">Отмена</button>
+            <button type="submit" class="btn btn-primary btn-sm">Добавить</button>
+          </div>
+        </form>
+      `);
+    }
+
+    function saveHabitForm(e) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const name = fd.get('name').trim();
+      if (!name) return;
+      state.habits.push({ id: uid('h'), name, domain: fd.get('domain'), logs: {} });
+      saveState(); closeModal(); renderView(); showToast('Привычка добавлена', 'var(--p-gossamer-green)');
+    }
+
+    /* ==========================================================================
+       11. РАЗДЕЛ 5: КИНО
+       ========================================================================== */
+    function renderStarRatingHTML(score, onClickExprBuilder) {
+      const n = Number(score) || 0;
+      const starPath = '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>';
+      return `
+        <div class="star-bar">
+          ${Array.from({ length: 10 }, (_, idx) => {
+            const val = idx + 1;
+            const filled = val <= n;
+            return `<button type="button" onclick="${onClickExprBuilder(val)}" class="star-btn ${filled ? 'filled' : ''}" title="${val} из 10">${iconSvg(starPath, 19)}</button>`;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function renderMoviesView() {
+      const all = state.movies;
+      const watched = all.filter(m => m.status === 'watched');
+      const planned = all.filter(m => m.status === 'planned');
+      const rated = watched.filter(m => Number(m.rating) > 0);
+      const avg = rated.length ? (rated.reduce((s, x) => s + Number(x.rating), 0) / rated.length).toFixed(1) : '—';
+
+      const list = getFilteredMovies();
+
+      return `
+        <div class="view-enter stack">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Кинодневник и оценки</div>
+              <h1 class="page-title">Кино</h1>
+            </div>
+            <button onclick="openMovieModal()" class="btn btn-primary btn-sm">
+              ${iconSvg('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>', 16)}
+              <span>Добавить фильм</span>
+            </button>
+          </div>
+
+          <div class="grid-3">
+            <div class="card" style="background: linear-gradient(145deg, #FFFFFF, rgba(210,193,200,0.34));">
+              <div class="text-sm muted">Просмотрено</div>
+              <div style="font-size:32px; font-weight:700;">${watched.length}</div>
+            </div>
+            <div class="card" style="background: linear-gradient(145deg, #FFFFFF, rgba(198,216,240,0.38));">
+              <div class="text-sm muted">В планах</div>
+              <div style="font-size:32px; font-weight:700;">${planned.length}</div>
+            </div>
+            <div class="card" style="background: linear-gradient(145deg, #FFFFFF, rgba(242,233,177,0.45));">
+              <div class="text-sm muted">Средняя оценка</div>
+              <div style="font-size:32px; font-weight:700;">${avg} <span class="muted" style="font-size:18px;">/ 10</span></div>
+            </div>
+          </div>
+
+          <div class="row-between">
+            <div class="pills-row">
+              ${[['all', 'Все'], ['planned', 'В планах'], ['watched', 'Просмотрено']].map(([f, lbl]) => `
+                <button onclick="ui.movieFilter='${f}'; renderView();" class="pill-tab ${ui.movieFilter === f ? 'active' : ''}">${lbl}</button>
+              `).join('')}
+            </div>
+            <input type="text" class="input" style="max-width: 300px;" value="${esc(ui.movieSearch)}" oninput="ui.movieSearch=this.value; updateMoviesDOM();" placeholder="Найти фильм или жанр..." />
+          </div>
+
+          <div id="movies-grid-dom" class="grid-2">
+            ${renderMoviesGridHTML(list)}
+          </div>
+        </div>
+      `;
+    }
+
+    function getFilteredMovies() {
+      let list = [...state.movies];
+      if (ui.movieFilter !== 'all') list = list.filter(m => m.status === ui.movieFilter);
+      if (ui.movieSearch.trim()) {
+        const q = ui.movieSearch.trim().toLowerCase();
+        list = list.filter(m => m.title.toLowerCase().includes(q) || (m.genre || '').toLowerCase().includes(q) || (m.review || '').toLowerCase().includes(q));
+      }
+      return list;
+    }
+
+    function updateMoviesDOM() {
+      const box = document.getElementById('movies-grid-dom');
+      if (box) box.innerHTML = renderMoviesGridHTML(getFilteredMovies());
+    }
+
+    function renderMoviesGridHTML(list) {
+      if (!list.length) {
+        return `<div class="empty-box" style="grid-column: 1 / -1;"><h3 style="font-size:24px;">Список фильмов пуст</h3><p class="muted" style="margin-top:6px;">Добавьте любимую картину или фильм, который хотите посмотреть вечером.</p></div>`;
+      }
+      return list.map(m => {
+        const isWatched = m.status === 'watched';
+        const score = Number(m.rating) || 0;
+        return `
+          <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; background:${isWatched ? 'var(--bg-card)' : 'linear-gradient(160deg, #FFFFFF, rgba(244,243,232,0.85))'};">
+            <div>
+              <div class="row-between" style="align-items:flex-start; margin-bottom:10px;">
+                <div class="row" style="gap:6px; flex-wrap:wrap;">
+                  <span class="badge" style="background:${isWatched ? 'var(--p-gossamer-green)' : 'var(--p-delicate-blue)'}; color:${isWatched ? 'var(--p-gossamer-green-ink)' : '#38506E'};">
+                    ${isWatched ? 'Просмотрено' : 'В планах'}
+                  </span>
+                  <span class="badge" style="background:var(--p-hushed-violet); color:#4F3945;">${esc(m.genre || 'Кино')}</span>
+                  ${m.year ? `<span class="text-sm muted">${esc(m.year)}</span>` : ''}
+                </div>
+                <div class="row" style="gap:2px;">
+                  <button onclick="openMovieModal('${m.id}')" class="icon-btn sm ghost" title="Редактировать">${iconSvg('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>', 16)}</button>
+                  <button onclick="deleteMovie('${m.id}')" class="icon-btn sm ghost danger" title="Удалить">${iconSvg('<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>', 16)}</button>
+                </div>
+              </div>
+
+              <h3 style="font-size:26px; margin-bottom:8px;">${esc(m.title)}</h3>
+
+              ${isWatched ? `
+                <div style="background: rgba(242,233,177,0.34); border: 1px solid rgba(185,155,59,0.22); border-radius: 14px; padding: 10px 12px; margin-bottom: 12px;">
+                  <div class="row-between" style="margin-bottom:6px;">
+                    <span style="font-size:19px; font-weight:700;">${score > 0 ? `${score} / 10` : 'Оцените фильм'}</span>
+                    <span class="text-sm italic" style="color: var(--p-pastel-yellow-ink);">${getRatingCaption(score)}</span>
+                  </div>
+                  ${renderStarRatingHTML(score, (val) => `setMovieRating('${m.id}', ${val})`)}
+                </div>
+              ` : ''}
+
+              ${m.review ? `<p class="muted" style="font-size:18px; line-height:1.5; margin-bottom:12px;">${esc(m.review)}</p>` : ''}
+            </div>
+
+            <div style="padding-top:10px; border-top:1px solid var(--border);">
+              ${isWatched ? `
+                <div class="text-sm muted">Дата просмотра: <strong>${m.watchDate ? formatHumanDate(m.watchDate) : 'не указана'}</strong></div>
+              ` : `
+                <button onclick="openMovieModal('${m.id}', true)" class="btn btn-pastel-orchid btn-sm" style="width:100%;">
+                  ${iconSvg('<polyline points="20 6 9 17 4 12"/>', 16)}
+                  <span>Отметить просмотренным и оценить</span>
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setMovieRating(id, val) {
+      const m = state.movies.find(x => x.id === id);
+      if (!m) return;
+      m.rating = val;
+      m.status = 'watched';
+      if (!m.watchDate) m.watchDate = toDateStr();
+      saveState();
+      renderView();
+      showToast(`Оценка: ${val}/10 — ${getRatingCaption(val)}`, 'var(--p-pastel-yellow)');
+    }
+
+    async function deleteMovie(id) {
+      if (!(await askConfirm('Удалить фильм?', 'Фильм и ваш отзыв будут удалены.'))) return;
+      state.movies = state.movies.filter(m => m.id !== id);
+      saveState(); renderView(); showToast('Фильм удалён');
+    }
+
+    function openMovieModal(movieId = null, forceWatched = false) {
+      const ex = movieId ? state.movies.find(m => m.id === movieId) : null;
+      const status = forceWatched ? 'watched' : (ex?.status || 'planned');
+      const rating = ex?.rating || (forceWatched ? 9 : 0);
+      const watchDate = ex?.watchDate || (status === 'watched' ? toDateStr() : '');
+
+      openModal(`
+        <div class="row-between" style="margin-bottom:18px;">
+          <h3 style="font-size:28px;">${forceWatched ? 'Оценить просмотренный фильм' : ex ? 'Редактировать фильм' : 'Новый фильм'}</h3>
+          <button onclick="closeModal()" class="icon-btn sm ghost">${iconSvg('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>', 19)}</button>
+        </div>
+        <form onsubmit="saveMovieForm(event, '${ex ? ex.id : ''}')" class="stack-sm">
+          <div>
+            <label class="field-label">Название фильма</label>
+            <input type="text" name="title" class="input" required value="${esc(ex?.title || '')}" placeholder="Например: Маленькие женщины" autofocus />
+          </div>
+          <div class="grid-2">
+            <div>
+              <label class="field-label">Жанр</label>
+              <select name="genre" class="input">
+                ${MOVIE_GENRES.map(g => `<option value="${g}" ${(ex?.genre || 'Романтика') === g ? 'selected' : ''}>${g}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Год</label>
+              <input type="text" name="year" class="input" value="${esc(ex?.year || '')}" placeholder="2024" />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label class="field-label">Статус</label>
+              <select name="status" class="input">
+                <option value="planned" ${status === 'planned' ? 'selected' : ''}>В планах</option>
+                <option value="watched" ${status === 'watched' ? 'selected' : ''}>Просмотрено</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Дата просмотра</label>
+              <input type="date" name="watchDate" class="input" value="${esc(watchDate)}" />
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Ваша оценка: <strong id="modal-movie-score-label">${rating > 0 ? `${rating}/10 · ${getRatingCaption(rating)}` : 'Без оценки'}</strong></label>
+            <input type="hidden" name="rating" id="modal-movie-rating" value="${rating}" />
+            <div id="modal-movie-stars" style="padding: 8px 12px; border-radius: 13px; background: rgba(242,233,177,0.32); border: 1px solid var(--border);">
+              ${renderStarRatingHTML(rating, (v) => `setModalRating('movie', ${v})`)}
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Впечатления и отзыв</label>
+            <textarea name="review" class="input" rows="4" placeholder="Что больше всего запомнилось? Атмосфера, герои, музыка...">${esc(ex?.review || '')}</textarea>
+          </div>
+          <div class="row" style="justify-content:flex-end; margin-top:8px;">
+            <button type="button" onclick="closeModal()" class="btn btn-secondary btn-sm">Отмена</button>
+            <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
+          </div>
+        </form>
+      `);
+    }
+
+    function setModalRating(kind, val) {
+      const inp = document.getElementById(`modal-${kind}-rating`);
+      const lbl = document.getElementById(`modal-${kind}-score-label`);
+      const wrap = document.getElementById(`modal-${kind}-stars`);
+      if (inp) inp.value = val;
+      if (lbl) lbl.textContent = `${val}/10 · ${getRatingCaption(val)}`;
+      if (wrap) wrap.innerHTML = renderStarRatingHTML(val, (v) => `setModalRating('${kind}', ${v})`);
+    }
+
+    function saveMovieForm(e, existingId) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const status = fd.get('status');
+      const payload = {
+        title: fd.get('title').trim(),
+        genre: fd.get('genre'),
+        year: fd.get('year').trim(),
+        status,
+        rating: Number(fd.get('rating')) || 0,
+        watchDate: fd.get('watchDate') || (status === 'watched' ? toDateStr() : ''),
+        review: fd.get('review').trim()
+      };
+      if (!payload.title) return;
+      if (existingId) {
+        const idx = state.movies.findIndex(m => m.id === existingId);
+        if (idx !== -1) state.movies[idx] = { ...state.movies[idx], ...payload };
+        showToast('Фильм обновлён', 'var(--p-hushed-violet)');
+      } else {
+        state.movies.unshift({ id: uid('m'), ...payload });
+        showToast('Фильм добавлен', 'var(--p-hushed-violet)');
+      }
+      saveState(); closeModal(); renderView();
+    }
+
+    /* ==========================================================================
+       12. РАЗДЕЛ 6: КНИГИ / ЧИТАТЕЛЬСКИЙ ДНЕВНИК + ЦИТАТЫ
+       ========================================================================== */
+    function renderBooksView() {
+      const all = state.books;
+      const totalQuotes = all.reduce((s, b) => s + (b.quotes?.length || 0), 0);
+
+      const tabs = [
+        ['all', `Все (${all.length})`],
+        ['reading', 'Читаю сейчас'],
+        ['read', 'Прочитано'],
+        ['want', 'Хочу прочитать'],
+        ['quotes', `Все цитаты (${totalQuotes})`]
+      ];
+
+      return `
+        <div class="view-enter stack">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Читательский дневник</div>
+              <h1 class="page-title">Книги и цитаты</h1>
+            </div>
+            <button onclick="openBookModal()" class="btn btn-primary btn-sm">
+              ${iconSvg('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>', 16)}
+              <span>Добавить книгу</span>
+            </button>
+          </div>
+
+          <div class="row-between">
+            <div class="pills-row">
+              ${tabs.map(([id, lbl]) => `
+                <button onclick="ui.bookTab='${id}'; renderView();" class="pill-tab ${ui.bookTab === id ? 'active' : ''}">${lbl}</button>
+              `).join('')}
+            </div>
+            <input type="text" class="input" style="max-width: 300px;" value="${esc(ui.bookSearch)}" oninput="ui.bookSearch=this.value; updateBooksDOM();" placeholder="${ui.bookTab === 'quotes' ? 'Поиск по цитатам...' : 'Книга, автор или жанр...'}" />
+          </div>
+
+          <div id="books-content-dom">
+            ${ui.bookTab === 'quotes' ? renderAllQuotesFeedHTML() : renderBooksListHTML()}
+          </div>
+        </div>
+      `;
+    }
+
+    function updateBooksDOM() {
+      const box = document.getElementById('books-content-dom');
+      if (!box) return;
+      box.innerHTML = ui.bookTab === 'quotes' ? renderAllQuotesFeedHTML() : renderBooksListHTML();
+    }
+
+    function renderBooksListHTML() {
+      let list = [...state.books];
+      if (ui.bookTab !== 'all' && ui.bookTab !== 'quotes') list = list.filter(b => b.status === ui.bookTab);
+      if (ui.bookSearch.trim()) {
+        const q = ui.bookSearch.trim().toLowerCase();
+        list = list.filter(b =>
+          b.title.toLowerCase().includes(q) ||
+          (b.author || '').toLowerCase().includes(q) ||
+          (b.genre || '').toLowerCase().includes(q) ||
+          (b.quotes || []).some(qt => qt.text.toLowerCase().includes(q))
+        );
+      }
+
+      if (!list.length) {
+        return `<div class="empty-box"><h3 style="font-size:24px;">Полка пока пуста</h3><p class="muted" style="margin-top:6px;">Добавьте книгу, которую читаете сейчас или мечтаете открыть.</p></div>`;
+      }
+
+      const statusMeta = {
+        reading: { label: 'Читаю сейчас', bg: 'var(--p-orchid-petal)', ink: '#FFFFFF' },
+        read: { label: 'Прочитано', bg: 'var(--p-gossamer-green)', ink: 'var(--p-gossamer-green-ink)' },
+        want: { label: 'Хочу прочитать', bg: 'var(--p-delicate-blue)', ink: '#38506E' }
+      };
+
+      return `
+        <div class="stack">
+          ${list.map(b => {
+            const sm = statusMeta[b.status] || statusMeta.want;
+            const score = Number(b.rating) || 0;
+            const quotes = b.quotes || [];
+            return `
+              <div class="card" style="padding: 24px;">
+                <div class="row-between" style="align-items:flex-start; margin-bottom:10px;">
+                  <div class="row" style="gap:8px; flex-wrap:wrap;">
+                    <span class="badge" style="background:${sm.bg}; color:${sm.ink};">${sm.label}</span>
+                    ${b.genre ? `<span class="badge" style="background:var(--p-cappucino-foam); color:var(--ink-muted);">${esc(b.genre)}</span>` : ''}
+                  </div>
+                  <div class="row" style="gap:4px;">
+                    <button onclick="openBookModal('${b.id}')" class="icon-btn sm ghost" title="Редактировать">${iconSvg('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>', 16)}</button>
+                    <button onclick="deleteBook('${b.id}')" class="icon-btn sm ghost danger" title="Удалить">${iconSvg('<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>', 16)}</button>
+                  </div>
+                </div>
+
+                <h3 style="font-size:29px; line-height:1.15;">${esc(b.title)}</h3>
+                <div class="muted italic" style="font-size:19px; margin-bottom:14px;">${esc(b.author || 'Автор не указан')}</div>
+
+                <div style="background: rgba(242,233,177,0.34); border: 1px solid rgba(185,155,59,0.2); border-radius: 14px; padding: 10px 14px; margin-bottom: 14px;">
+                  <div class="row-between" style="margin-bottom:4px;">
+                    <span style="font-size:18px; font-weight:700;">Оценка: ${score > 0 ? `${score} / 10` : 'пока без оценки'}</span>
+                    <span class="text-sm italic" style="color:var(--p-pastel-yellow-ink);">${getRatingCaption(score)}</span>
+                  </div>
+                  ${renderStarRatingHTML(score, (val) => `setBookRating('${b.id}', ${val})`)}
+                </div>
+
+                ${b.review ? `<p class="muted" style="font-size:18px; line-height:1.55; margin-bottom:18px;">${esc(b.review)}</p>` : ''}
+
+                <div style="padding-top:16px; border-top:1px solid var(--border);">
+                  <div class="row-between" style="margin-bottom:12px;">
+                    <div class="row" style="gap:8px;">
+                      <span class="dot" style="background: var(--p-orchid-petal);"></span>
+                      <h4 style="font-size:21px;">Любимые цитаты (${quotes.length})</h4>
+                    </div>
+                  </div>
+
+                  ${quotes.length ? `
+                    <div class="stack-sm" style="margin-bottom:14px;">
+                      ${quotes.map(qt => `
+                        <div class="quote-card">
+                          <div class="quote-text"><span class="quote-mark">«</span>${esc(qt.text)}<span class="quote-mark" style="margin-left:3px;">»</span></div>
+                          <div class="row-between" style="margin-top:8px;">
+                            <span class="text-sm muted">${qt.page ? esc(qt.page) : 'Избранная строка'}</span>
+                            <div class="row" style="gap:4px;">
+                              <button onclick="copyBookQuote('${b.id}', '${qt.id}')" class="icon-btn sm ghost" title="Скопировать цитату">${iconSvg('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>', 15)}</button>
+                              <button onclick="deleteBookQuote('${b.id}', '${qt.id}')" class="icon-btn sm ghost danger" title="Удалить цитату">${iconSvg('<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>', 15)}</button>
+                            </div>
+                          </div>
+                        </div>
+                      `).join('')}
+                    </div>
+                  ` : `<p class="text-sm muted italic" style="margin-bottom:12px;">Сохраняйте здесь строки, которые отозвались в сердце.</p>`}
+
+                  <form onsubmit="addQuoteToBook(event, '${b.id}')" style="background: rgba(197,183,209,0.18); border: 1px solid rgba(197,183,209,0.45); border-radius: 14px; padding: 12px;">
+                    <textarea name="text" class="input" rows="2" required placeholder="Вписать любимую цитату из этой книги..." style="min-height:64px; margin-bottom:8px;"></textarea>
+                    <div class="row" style="flex-wrap:wrap;">
+                      <input type="text" name="page" class="input" style="flex:1; min-width:160px; padding:7px 12px;" placeholder="Страница или глава (необязательно)" />
+                      <button type="submit" class="btn btn-pastel-orchid btn-sm">Сохранить цитату</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function renderAllQuotesFeedHTML() {
+      const q = ui.bookSearch.trim().toLowerCase();
+      const items = [];
+      state.books.forEach(b => {
+        (b.quotes || []).forEach(qt => {
+          if (!q || qt.text.toLowerCase().includes(q) || b.title.toLowerCase().includes(q) || (b.author || '').toLowerCase().includes(q)) {
+            items.push({ bookId: b.id, bookTitle: b.title, bookAuthor: b.author, quote: qt });
+          }
+        });
+      });
+
+      if (!items.length) {
+        return `<div class="empty-box"><h3 style="font-size:24px;">Цитат пока нет</h3><p class="muted" style="margin-top:6px;">Добавляйте любимые фразы внутри карточек книг — они все соберутся здесь.</p></div>`;
+      }
+
+      return `
+        <div class="notes-masonry">
+          ${items.map((item, idx) => {
+            const bg = idx % 2 === 0 ? 'var(--p-cappucino-foam)' : 'rgba(197,183,209,0.24)';
+            return `
+              <div class="note-card" style="background:${bg}; border-left: 4px solid var(--p-orchid-petal);">
+                <div class="quote-text" style="font-size:21px; margin-bottom:14px;">
+                  <span class="quote-mark">«</span>${esc(item.quote.text)}<span class="quote-mark" style="margin-left:3px;">»</span>
+                </div>
+                <div class="row-between" style="padding-top:10px; border-top:1px solid var(--border);">
+                  <div>
+                    <div style="font-size:17px; font-weight:700;">${esc(item.bookTitle)}</div>
+                    <div class="text-sm muted italic">${esc(item.bookAuthor || '')}${item.quote.page ? ` · ${esc(item.quote.page)}` : ''}</div>
+                  </div>
+                  <button onclick="copyBookQuote('${item.bookId}', '${item.quote.id}')" class="icon-btn sm ghost" title="Скопировать">${iconSvg('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>', 16)}</button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function setBookRating(id, val) {
+      const b = state.books.find(x => x.id === id);
+      if (!b) return;
+      b.rating = val;
+      saveState();
+      renderView();
+      showToast(`Книга оценена на ${val}/10`, 'var(--p-pastel-yellow)');
+    }
+
+    function addQuoteToBook(e, bookId) {
+      e.preventDefault();
+      const b = state.books.find(x => x.id === bookId);
+      if (!b) return;
+      const fd = new FormData(e.target);
+      const text = fd.get('text').trim();
+      if (!text) return;
+      b.quotes = b.quotes || [];
+      b.quotes.unshift({ id: uid('q'), text, page: fd.get('page').trim() });
+      saveState();
+      renderView();
+      showToast('Цитата сохранена в дневник', 'var(--p-orchid-petal)');
+    }
+
+    function copyBookQuote(bookId, quoteId) {
+      const b = state.books.find(x => x.id === bookId);
+      const qt = b?.quotes?.find(q => q.id === quoteId);
+      if (!qt) return;
+      copyTextSafe(`«${qt.text}» — ${b.title}${b.author ? ` (${b.author})` : ''}`);
+    }
+
+    async function deleteBookQuote(bookId, quoteId) {
+      if (!(await askConfirm('Удалить цитату?', 'Строка будет удалена из читательского дневника.'))) return;
+      const b = state.books.find(x => x.id === bookId);
+      if (!b) return;
+      b.quotes = (b.quotes || []).filter(q => q.id !== quoteId);
+      saveState(); renderView(); showToast('Цитата удалена');
+    }
+
+    async function deleteBook(id) {
+      if (!(await askConfirm('Удалить книгу?', 'Книга и все сохранённые в ней цитаты будут удалены.'))) return;
+      state.books = state.books.filter(b => b.id !== id);
+      saveState(); renderView(); showToast('Книга удалена');
+    }
+
+    function openBookModal(bookId = null) {
+      const ex = bookId ? state.books.find(b => b.id === bookId) : null;
+      const rating = ex?.rating || 0;
+      openModal(`
+        <div class="row-between" style="margin-bottom:18px;">
+          <h3 style="font-size:28px;">${ex ? 'Редактировать книгу' : 'Новая книга'}</h3>
+          <button onclick="closeModal()" class="icon-btn sm ghost">${iconSvg('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>', 19)}</button>
+        </div>
+        <form onsubmit="saveBookForm(event, '${ex ? ex.id : ''}')" class="stack-sm">
+          <div>
+            <label class="field-label">Название книги</label>
+            <input type="text" name="title" class="input" required value="${esc(ex?.title || '')}" placeholder="Например: Цирцея" autofocus />
+          </div>
+          <div class="grid-2">
+            <div>
+              <label class="field-label">Автор</label>
+              <input type="text" name="author" class="input" value="${esc(ex?.author || '')}" placeholder="Имя автора" />
+            </div>
+            <div>
+              <label class="field-label">Жанр</label>
+              <select name="genre" class="input">
+                ${BOOK_GENRES.map(g => `<option value="${g}" ${(ex?.genre || 'Мифология') === g ? 'selected' : ''}>${g}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Статус чтения</label>
+            <select name="status" class="input">
+              <option value="reading" ${(ex?.status || 'reading') === 'reading' ? 'selected' : ''}>Читаю сейчас</option>
+              <option value="read" ${ex?.status === 'read' ? 'selected' : ''}>Прочитано</option>
+              <option value="want" ${ex?.status === 'want' ? 'selected' : ''}>Хочу прочитать</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Оценка: <strong id="modal-book-score-label">${rating > 0 ? `${rating}/10 · ${getRatingCaption(rating)}` : 'Без оценки'}</strong></label>
+            <input type="hidden" name="rating" id="modal-book-rating" value="${rating}" />
+            <div id="modal-book-stars" style="padding: 8px 12px; border-radius: 13px; background: rgba(242,233,177,0.32); border: 1px solid var(--border);">
+              ${renderStarRatingHTML(rating, (v) => `setModalRating('book', ${v})`)}
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Личные впечатления</label>
+            <textarea name="review" class="input" rows="4" placeholder="Ваши мысли о книге, слоге и героях...">${esc(ex?.review || '')}</textarea>
+          </div>
+          <div class="row" style="justify-content:flex-end; margin-top:8px;">
+            <button type="button" onclick="closeModal()" class="btn btn-secondary btn-sm">Отмена</button>
+            <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
+          </div>
+        </form>
+      `);
+    }
+
+    function saveBookForm(e, existingId) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const payload = {
+        title: fd.get('title').trim(),
+        author: fd.get('author').trim(),
+        genre: fd.get('genre'),
+        status: fd.get('status'),
+        rating: Number(fd.get('rating')) || 0,
+        review: fd.get('review').trim()
+      };
+      if (!payload.title) return;
+      if (existingId) {
+        const idx = state.books.findIndex(b => b.id === existingId);
+        if (idx !== -1) state.books[idx] = { ...state.books[idx], ...payload };
+        showToast('Книга обновлена', 'var(--p-orchid-petal)');
+      } else {
+        state.books.unshift({ id: uid('b'), ...payload, quotes: [] });
+        showToast('Книга добавлена в дневник', 'var(--p-orchid-petal)');
+      }
+      saveState(); closeModal(); renderView();
+    }
+
+    /* ==========================================================================
+       13. РАЗДЕЛ 7: ЗАМЕТКИ (ВСЕ 9 ОТТЕНКОВ PANTONE)
+       ========================================================================== */
+    function renderNotesView() {
+      const filtered = getFilteredNotes();
+      return `
+        <div class="view-enter stack">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Мысли и вдохновение</div>
+              <h1 class="page-title">Заметки</h1>
+            </div>
+            <button onclick="openNoteModal()" class="btn btn-primary btn-sm">
+              ${iconSvg('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>', 16)}
+              <span>Новая заметка</span>
+            </button>
+          </div>
+
+          <div class="row-between">
+            <div class="pills-row">
+              ${NOTE_CATEGORIES.map(c => `
+                <button onclick="ui.noteCategory='${c}'; renderView();" class="pill-tab ${ui.noteCategory === c ? 'active' : ''}">${c}</button>
+              `).join('')}
+            </div>
+            <input type="text" class="input" style="max-width: 300px;" value="${esc(ui.noteSearch)}" oninput="ui.noteSearch=this.value; updateNotesDOM();" placeholder="Найти заметку..." />
+          </div>
+
+          <div id="notes-dom">
+            ${renderNotesContentHTML(filtered)}
+          </div>
+        </div>
+      `;
+    }
+
+    function getFilteredNotes() {
+      let list = [...state.notes];
+      if (ui.noteCategory !== 'Все') list = list.filter(n => n.category === ui.noteCategory);
+      if (ui.noteSearch.trim()) {
+        const q = ui.noteSearch.trim().toLowerCase();
+        list = list.filter(n => n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q));
+      }
+      return list;
+    }
+
+    function updateNotesDOM() {
+      const box = document.getElementById('notes-dom');
+      if (box) box.innerHTML = renderNotesContentHTML(getFilteredNotes());
+    }
+
+    function renderNotesContentHTML(list) {
+      if (!list.length) {
+        return `<div class="empty-box"><h3 style="font-size:24px;">Заметок пока нет</h3><p class="muted" style="margin-top:6px;">Создайте карточку в любом из 9 пастельных оттенков Pantone.</p></div>`;
+      }
+      const pinned = list.filter(n => n.pinned);
+      const others = list.filter(n => !n.pinned);
+      return `
+        <div class="stack">
+          ${pinned.length ? `<div><div class="eyebrow" style="margin-bottom:10px;">Закреплённые</div><div class="notes-masonry">${pinned.map(renderNoteCard).join('')}</div></div>` : ''}
+          ${others.length ? `<div>${pinned.length ? '<div class="eyebrow" style="margin-bottom:10px;">Остальные</div>' : ''}<div class="notes-masonry">${others.map(renderNoteCard).join('')}</div></div>` : ''}
+        </div>
+      `;
+    }
+
+    function renderNoteCard(n) {
+      const col = PANTONE_COLORS.find(c => c.id === n.color) || PANTONE_COLORS[7];
+      const darkSurf = !col.darkText;
+      return `
+        <div class="note-card ${darkSurf ? 'dark-surface' : ''}" style="background:${col.hex};">
+          <div class="row-between" style="align-items:flex-start; margin-bottom:10px;">
+            <h4 onclick="openNoteModal('${n.id}')" style="font-size:23px; cursor:pointer;">${esc(n.title || 'Без названия')}</h4>
+            <button onclick="togglePinNote('${n.id}')" class="icon-btn sm ghost" style="${darkSurf ? 'color:#FFFFFF;' : ''}" title="${n.pinned ? 'Открепить' : 'Закрепить'}">
+              ${iconSvg('<path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>', 16)}
+            </button>
+          </div>
+          <div onclick="openNoteModal('${n.id}')" class="note-body" style="white-space:pre-line; font-size:18px; line-height:1.5; cursor:pointer; margin-bottom:14px; opacity:0.92;">${esc(n.content)}</div>
+          <div class="note-meta row-between" style="padding-top:10px; border-top:1px solid rgba(38,48,64,0.12); font-size:14px;">
+            <div class="row" style="gap:6px;">
+              <span class="badge" style="background:rgba(255,255,255,0.62); color:var(--ink-main);">${esc(n.category)}</span>
+              <span>${col.name}</span>
+            </div>
+            <div class="row" style="gap:2px;">
+              <button onclick="openNoteModal('${n.id}')" class="icon-btn sm ghost" style="${darkSurf ? 'color:#FFFFFF;' : ''}">${iconSvg('<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>', 15)}</button>
+              <button onclick="deleteNote('${n.id}')" class="icon-btn sm ghost danger" style="${darkSurf ? 'color:#FFFFFF;' : ''}">${iconSvg('<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>', 15)}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function togglePinNote(id) { const n = state.notes.find(x => x.id === id); if (n) { n.pinned = !n.pinned; saveState(); renderView(); } }
+    async function deleteNote(id) {
+      if (!(await askConfirm('Удалить заметку?', 'Запись будет удалена без возможности восстановления.'))) return;
+      state.notes = state.notes.filter(n => n.id !== id);
+      saveState(); renderView(); showToast('Заметка удалена');
+    }
+
+    function openNoteModal(noteId = null) {
+      const ex = noteId ? state.notes.find(n => n.id === noteId) : null;
+      const curColor = ex?.color || 'delicate-blue';
+      openModal(`
+        <div class="row-between" style="margin-bottom:18px;">
+          <h3 style="font-size:28px;">${ex ? 'Редактировать заметку' : 'Новая заметка'}</h3>
+          <button onclick="closeModal()" class="icon-btn sm ghost">${iconSvg('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>', 19)}</button>
+        </div>
+        <form onsubmit="saveNoteForm(event, '${ex ? ex.id : ''}')" class="stack-sm">
+          <div>
+            <label class="field-label">Заголовок</label>
+            <input type="text" name="title" class="input" required value="${esc(ex?.title || '')}" placeholder="О чём эта заметка?" autofocus />
+          </div>
+          <div>
+            <label class="field-label">Текст заметки</label>
+            <textarea name="content" class="input" rows="5" placeholder="Пишите свободно — шрифт уже настроен для красоты...">${esc(ex?.content || '')}</textarea>
+          </div>
+          <div>
+            <label class="field-label">Категория</label>
+            <select name="category" class="input">
+              ${NOTE_CATEGORIES.filter(c => c !== 'Все').map(c => `<option value="${c}" ${(ex?.category || 'Личное') === c ? 'selected' : ''}>${c}</option>`).join('')}
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Оттенок Pantone (9 пастельных цветов)</label>
+            <div class="pantone-grid">
+              ${PANTONE_COLORS.map(c => `
+                <label class="pantone-option">
+                  <input type="radio" name="color" value="${c.id}" ${curColor === c.id ? 'checked' : ''} />
+                  <div class="pantone-tile">
+                    <span class="pantone-swatch" style="background:${c.hex};"></span>
+                    <span class="pantone-name">${c.name}</span>
+                  </div>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+          <label class="row" style="gap:8px; cursor:pointer; font-size:17px; margin-top:4px;">
+            <input type="checkbox" name="pinned" ${ex?.pinned ? 'checked' : ''} style="width:18px;height:18px;" />
+            <span>Закрепить заметку наверху</span>
+          </label>
+          <div class="row" style="justify-content:flex-end; margin-top:8px;">
+            <button type="button" onclick="closeModal()" class="btn btn-secondary btn-sm">Отмена</button>
+            <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
+          </div>
+        </form>
+      `);
+    }
+
+    function saveNoteForm(e, existingId) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const data = {
+        title: fd.get('title').trim(),
+        content: fd.get('content').trim(),
+        category: fd.get('category'),
+        color: fd.get('color') || 'delicate-blue',
+        pinned: fd.get('pinned') === 'on',
+        updatedAt: toDateStr()
+      };
+      if (existingId) {
+        const idx = state.notes.findIndex(n => n.id === existingId);
+        if (idx !== -1) state.notes[idx] = { ...state.notes[idx], ...data };
+        showToast('Заметка обновлена');
+      } else {
+        state.notes.unshift({ id: uid('n'), ...data });
+        showToast('Заметка сохранена');
+      }
+      saveState(); closeModal(); renderView();
+    }
+
+    /* ==========================================================================
+       14. РАЗДЕЛ 8: ЦИКЛ (MARY'S ROSE & HUSHED VIOLET)
+       ========================================================================== */
+    function renderCycleView() {
+      const today = toDateStr();
+      const info = getCycleOverview(today);
+      const y = ui.cycleYear, m = ui.cycleMonth;
+      const firstDay = new Date(y, m, 1);
+      const daysInMonth = new Date(y, m + 1, 0).getDate();
+      const offset = (firstDay.getDay() + 6) % 7;
+
+      const r = 56, circ = 2 * Math.PI * r;
+      const ratio = info.hasData ? Math.min(1, info.dayOfCycle / info.cycleLen) : 0;
+      const dashOffset = circ * (1 - ratio);
+
+      const sel = ui.cycleSelectedDate;
+      const dayLog = state.cycle.logs[sel] || { tags: [], note: '' };
+      const isSelLogged = state.cycle.periodDays.includes(sel);
+
+      const cells = [];
+      for (let i = 0; i < offset; i++) cells.push('<div></div>');
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dStr = `${y}-${pad2(m + 1)}-${pad2(d)}`;
+        const st = getCycleDateStatus(dStr);
+        const cls = st?.type === 'logged' ? 'logged' : st?.type === 'predicted' ? 'predicted' : st?.type === 'ovulation' ? 'ovulation' : '';
+        const hasLog = Boolean(state.cycle.logs[dStr]?.tags?.length || state.cycle.logs[dStr]?.note);
+        cells.push(`
+          <button onclick="ui.cycleSelectedDate='${dStr}'; renderView();" class="cycle-day-btn ${cls} ${dStr === sel ? 'selected' : ''}" style="${dStr === today ? 'text-decoration:underline;' : ''}">
+            <span>${d}</span>
+            ${hasLog ? '<span class="dot" style="width:5px;height:5px;background:var(--p-hushed-violet-ink);margin-top:2px;"></span>' : ''}
+          </button>
+        `);
+      }
+
+      const history = [...(info.episodes || [])].reverse().map((ep, i, arr) => ({
+        ...ep, duration: i > 0 ? diffDays(ep.start, arr[i - 1].start) : null
+      }));
+
+      return `
+        <div class="view-enter stack">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Бережное наблюдение</div>
+              <h1 class="page-title">Цикл</h1>
+            </div>
+            <button onclick="logPeriodToday()" class="btn btn-pastel-rose btn-sm">
+              ${iconSvg('<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>', 17)}
+              <span>${info.isLoggedToday ? 'Снять отметку за сегодня' : 'Начались сегодня'}</span>
+            </button>
+          </div>
+
+          <div class="card" style="background: linear-gradient(145deg, #FFFFFF, rgba(243,225,229,0.58)); padding: 26px;">
+            ${info.hasData ? `
+              <div class="row" style="gap: 28px; flex-wrap: wrap;">
+                <div style="position:relative; width:136px; height:136px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <svg width="136" height="136" viewBox="0 0 132 132" style="transform: rotate(-90deg);">
+                    <circle cx="66" cy="66" r="${r}" fill="none" stroke="rgba(210,193,200,0.45)" stroke-width="8" />
+                    <circle cx="66" cy="66" r="${r}" fill="none" stroke="${info.phase.ring}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${dashOffset}" />
+                  </svg>
+                  <div style="position:absolute; text-align:center;">
+                    <div class="text-xs muted" style="text-transform:uppercase;">День</div>
+                    <div style="font-size:38px; font-weight:700; line-height:0.95;">${info.dayOfCycle}</div>
+                    <div class="text-xs muted">из ${info.cycleLen}</div>
+                  </div>
+                </div>
+
+                <div style="flex:1; min-width:240px;">
+                  <span class="badge" style="background:${info.phase.bg}; color:${info.phase.ink}; font-size:15px;">${info.phase.name}</span>
+                  <h2 style="font-size:30px; margin-top:8px;">
+                    ${info.isLate ? `Задержка ${pluralDays(info.lateDays)}` : info.daysUntilNext === 0 ? 'Прогноз начала — сегодня' : `До следующего цикла ~${pluralDays(info.daysUntilNext)}`}
+                  </h2>
+                  <p class="muted" style="margin-top:8px; font-size:18px;">${info.phase.desc}</p>
+                  <div class="row" style="gap:20px; flex-wrap:wrap; margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:16px;">
+                    <span>Прогноз начала: <strong>${formatHumanDate(info.nextPeriodStart)}</strong></span>
+                    <span>Окно овуляции: <strong>~${formatHumanDate(info.ovulationDate)}</strong></span>
+                  </div>
+                </div>
+              </div>
+            ` : `<p class="muted" style="text-align:center; padding:16px 0;">Отметьте первый день менструации кнопкой выше или в календаре ниже.</p>`}
+          </div>
+
+          <div class="grid-split">
+            <div class="stack">
+              <div class="card">
+                <div class="row-between" style="margin-bottom:12px;">
+                  <h3 style="font-size:24px;">${MONTHS_RU[m]} ${y}</h3>
+                  <div class="row" style="gap:4px;">
+                    <button onclick="shiftCycleMonth(-1)" class="icon-btn sm ghost">${iconSvg('<polyline points="15 18 9 12 15 6"/>', 17)}</button>
+                    <button onclick="shiftCycleMonth(1)" class="icon-btn sm ghost">${iconSvg('<polyline points="9 18 15 12 9 6"/>', 17)}</button>
+                  </div>
+                </div>
+                <div class="cal-grid" style="margin-bottom:6px;">
+                  ${WEEKDAYS_SHORT_MON.map(w => `<div class="cal-weekday">${w}</div>`).join('')}
+                </div>
+                <div class="cal-grid">${cells.join('')}</div>
+                <div class="row-between" style="margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
+                  <span class="text-sm">Дата: <strong>${formatHumanDate(sel)}</strong></span>
+                  <button onclick="togglePeriodDay('${sel}')" class="btn btn-sm ${isSelLogged ? 'btn-primary' : 'btn-pastel-rose'}">
+                    ${isSelLogged ? 'Снять отметку' : 'Отметить день менструации'}
+                  </button>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3 style="font-size:22px; margin-bottom:12px;">Настройки расчёта</h3>
+                <div class="grid-2">
+                  <div>
+                    <label class="field-label">Средняя длина цикла (дн.)</label>
+                    <input type="number" min="20" max="45" class="input" value="${state.cycle.cycleLength}" onchange="updateCycleParam('cycleLength', this.value)" />
+                  </div>
+                  <div>
+                    <label class="field-label">Длительность менструации (дн.)</label>
+                    <input type="number" min="2" max="10" class="input" value="${state.cycle.periodLength}" onchange="updateCycleParam('periodLength', this.value)" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="stack">
+              <div class="card stack-sm">
+                <div>
+                  <div class="eyebrow">Самочувствие · ${formatShortDate(sel)}</div>
+                  <h3 style="font-size:24px;">Настроение и симптомы</h3>
+                </div>
+                <div class="pills-row">
+                  ${SYMPTOM_TAGS.map(tag => {
+                    const on = dayLog.tags.includes(tag);
+                    return `
+                      <button onclick="toggleCycleTag('${sel}', '${tag}')" class="pill-tab" style="padding:6px 13px; font-size:15px; background:${on ? 'var(--p-marys-rose)' : '#FFFFFF'}; color:${on ? 'var(--p-marys-rose-ink)' : 'var(--ink-muted)'}; border-color:${on ? '#CE959E' : 'var(--border)'};">${tag}</button>
+                    `;
+                  }).join('')}
+                </div>
+                <div>
+                  <label class="field-label">Заметка на ${formatHumanDate(sel)}</label>
+                  <textarea id="cycle-note-input" class="input" rows="3" placeholder="Как вы себя чувствуете сегодня?">${esc(dayLog.note || '')}</textarea>
+                  <button onclick="saveCycleNote('${sel}')" class="btn btn-secondary btn-sm" style="width:100%; margin-top:8px;">Сохранить заметку</button>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3 style="font-size:22px; margin-bottom:10px;">История циклов</h3>
+                ${history.length ? history.map(ep => `
+                  <div class="row-between" style="padding:8px 0; border-bottom:1px solid var(--border); font-size:16px;">
+                    <div>
+                      <div style="font-weight:700;">${formatHumanDate(ep.start)} — ${formatHumanDate(ep.end)}</div>
+                      <div class="text-xs muted">Длительность: ${pluralDays(ep.length)}</div>
+                    </div>
+                    <span class="badge" style="background:var(--p-heavenly-pink); color:var(--p-marys-rose-ink);">${ep.duration ? `Цикл ${ep.duration} дн.` : 'Текущий'}</span>
+                  </div>
+                `).join('') : `<p class="muted text-sm">История пока пуста.</p>`}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function shiftCycleMonth(d) { const dt = new Date(ui.cycleYear, ui.cycleMonth + d, 1); ui.cycleYear = dt.getFullYear(); ui.cycleMonth = dt.getMonth(); renderView(); }
+    function togglePeriodDay(dateStr) {
+      const i = state.cycle.periodDays.indexOf(dateStr);
+      if (i !== -1) state.cycle.periodDays.splice(i, 1);
+      else { state.cycle.periodDays.push(dateStr); state.cycle.periodDays.sort(); }
+      saveState(); renderView();
+    }
+    function logPeriodToday() {
+      const today = toDateStr();
+      togglePeriodDay(today);
+      ui.cycleSelectedDate = today;
+      showToast(state.cycle.periodDays.includes(today) ? 'Отмечено начало цикла сегодня' : 'Отметка снята', 'var(--p-marys-rose)');
+    }
+    function updateCycleParam(key, val) {
+      const n = parseInt(val, 10);
+      if (isNaN(n)) return;
+      state.cycle[key] = key === 'cycleLength' ? Math.max(20, Math.min(45, n)) : Math.max(2, Math.min(10, n));
+      saveState(); renderView(); showToast('Прогноз обновлён');
+    }
+    function toggleCycleTag(dateStr, tag) {
+      state.cycle.logs[dateStr] = state.cycle.logs[dateStr] || { tags: [], note: '' };
+      const arr = state.cycle.logs[dateStr].tags;
+      const idx = arr.indexOf(tag);
+      if (idx !== -1) arr.splice(idx, 1); else arr.push(tag);
+      saveState(); renderView();
+    }
+    function saveCycleNote(dateStr) {
+      const el = document.getElementById('cycle-note-input');
+      if (!el) return;
+      state.cycle.logs[dateStr] = state.cycle.logs[dateStr] || { tags: [], note: '' };
+      state.cycle.logs[dateStr].note = el.value.trim();
+      saveState(); renderView(); showToast('Заметка о самочувствии сохранена', 'var(--p-marys-rose)');
+    }
+
+    /* ==========================================================================
+       15. РАЗДЕЛ 9: ФИНАНСЫ (₽)
+       ========================================================================== */
+    function renderFinanceView() {
+      const y = ui.finYear, m = ui.finMonth;
+      const ym = `${y}-${pad2(m + 1)}`;
+      const monthTx = state.transactions.filter(t => t.date.startsWith(ym)).sort((a, b) => b.date.localeCompare(a.date));
+      const inc = monthTx.filter(t => t.type === 'income').reduce((s, x) => s + Number(x.amount), 0);
+      const exp = monthTx.filter(t => t.type === 'expense').reduce((s, x) => s + Number(x.amount), 0);
+      const bal = inc - exp;
+
+      const byCat = {};
+      monthTx.filter(t => t.type === 'expense').forEach(t => byCat[t.category] = (byCat[t.category] || 0) + Number(t.amount));
+      const catRows = Object.entries(byCat).sort((a, b) => b[1] - a[1]);
+      const visibleTx = ui.finFilter === 'all' ? monthTx : monthTx.filter(t => t.type === ui.finFilter);
+      const defaultDate = toDateStr().startsWith(ym) ? toDateStr() : `${ym}-01`;
+      const cats = ui.finFormType === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
+
+      return `
+        <div class="view-enter stack">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Спокойный учёт</div>
+              <h1 class="page-title">Финансы</h1>
+            </div>
+            <div class="card row" style="padding: 6px; border-radius: 14px; gap: 4px;">
+              <button onclick="shiftFinMonth(-1)" class="icon-btn sm ghost">${iconSvg('<polyline points="15 18 9 12 15 6"/>', 17)}</button>
+              <span style="padding: 0 12px; font-weight:700;">${MONTHS_RU[m]} ${y}</span>
+              <button onclick="shiftFinMonth(1)" class="icon-btn sm ghost">${iconSvg('<polyline points="9 18 15 12 9 6"/>', 17)}</button>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="card" style="background: linear-gradient(145deg, #FFFFFF, rgba(198,216,240,0.52));">
+              <div class="text-sm muted">Баланс месяца</div>
+              <div style="font-size:32px; font-weight:700; margin-top:4px;">${formatCurrency(bal)}</div>
+            </div>
+            <div class="card" style="background: linear-gradient(145deg, #FFFFFF, rgba(181,211,190,0.45));">
+              <div class="text-sm muted">Доходы</div>
+              <div style="font-size:32px; font-weight:700; color:var(--p-gossamer-green-ink); margin-top:4px;">+${formatCurrency(inc)}</div>
+            </div>
+            <div class="card" style="background: linear-gradient(145deg, #FFFFFF, rgba(247,214,218,0.52));">
+              <div class="text-sm muted">Расходы</div>
+              <div style="font-size:32px; font-weight:700; color:var(--p-marys-rose-ink); margin-top:4px;">−${formatCurrency(exp)}</div>
+            </div>
+          </div>
+
+          <div class="grid-split reverse">
+            <div class="stack">
+              <div class="card">
+                <h3 style="font-size:24px; margin-bottom:14px;">Новая запись</h3>
+                <form onsubmit="addTxForm(event)" class="stack-sm">
+                  <div class="grid-2" style="gap:8px;">
+                    <button type="button" onclick="ui.finFormType='expense'; renderView();" class="btn btn-sm" style="background:${ui.finFormType === 'expense' ? 'var(--p-hushed-violet)' : 'var(--bg-subtle)'}; color:var(--ink-main);">Расход</button>
+                    <button type="button" onclick="ui.finFormType='income'; renderView();" class="btn btn-sm" style="background:${ui.finFormType === 'income' ? 'var(--p-gossamer-green)' : 'var(--bg-subtle)'}; color:var(--ink-main);">Доход</button>
+                  </div>
+                  <div class="grid-2">
+                    <div>
+                      <label class="field-label">Сумма (₽)</label>
+                      <input type="number" name="amount" min="1" step="any" required class="input" placeholder="1 500" />
+                    </div>
+                    <div>
+                      <label class="field-label">Дата</label>
+                      <input type="date" name="date" required value="${defaultDate}" class="input" />
+                    </div>
+                  </div>
+                  <div>
+                    <label class="field-label">Категория</label>
+                    <select name="category" class="input">
+                      ${cats.map(c => `<option value="${c}">${c}</option>`).join('')}
+                    </select>
+                  </div>
+                  <div>
+                    <label class="field-label">Комментарий</label>
+                    <input type="text" name="comment" class="input" placeholder="Например: Книга и кофе" />
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">Добавить ${ui.finFormType === 'income' ? 'доход' : 'расход'}</button>
+                </form>
+              </div>
+
+              <div class="card">
+                <h3 style="font-size:24px; margin-bottom:14px;">Структура расходов</h3>
+                ${catRows.length ? `
+                  <div class="stack-sm">
+                    ${catRows.map(([cat, sum]) => {
+                      const pct = exp ? Math.round((sum / exp) * 100) : 0;
+                      return `
+                        <div>
+                          <div class="row-between" style="font-size:16px; margin-bottom:4px;">
+                            <span>${esc(cat)}</span>
+                            <span><strong>${formatCurrency(sum)}</strong> · ${pct}%</span>
+                          </div>
+                          <div class="progress-track">
+                            <div class="progress-fill" style="width:${pct}%; background: linear-gradient(90deg, var(--p-hushed-violet), var(--p-marys-rose));"></div>
+                          </div>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                ` : `<p class="muted text-sm">В этом месяце расходов пока нет.</p>`}
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3 style="font-size:24px;">История операций</h3>
+                <div class="pills-row">
+                  ${[['all', 'Все'], ['income', 'Доходы'], ['expense', 'Расходы']].map(([f, lbl]) => `
+                    <button onclick="ui.finFilter='${f}'; renderView();" class="pill-tab ${ui.finFilter === f ? 'active' : ''}" style="padding:5px 12px; font-size:15px;">${lbl}</button>
+                  `).join('')}
+                </div>
+              </div>
+
+              ${visibleTx.length ? visibleTx.map(tx => {
+                const isInc = tx.type === 'income';
+                return `
+                  <div class="row-between" style="padding: 11px 0; border-bottom: 1px solid var(--border);">
+                    <div class="row" style="gap:12px;">
+                      <span style="width:36px;height:36px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;background:${isInc ? 'var(--p-gossamer-green)' : 'var(--p-marys-rose)'}; color:${isInc ? 'var(--p-gossamer-green-ink)' : 'var(--p-marys-rose-ink)'};">
+                        ${isInc ? iconSvg('<line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>', 16) : iconSvg('<line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>', 16)}
+                      </span>
+                      <div>
+                        <div style="font-size:18px; font-weight:700;">${esc(tx.category)}</div>
+                        <div class="text-sm muted">${formatShortDate(tx.date)}${tx.comment ? ` · ${esc(tx.comment)}` : ''}</div>
+                      </div>
+                    </div>
+                    <div class="row" style="gap:8px;">
+                      <span style="font-size:19px; font-weight:700; color:${isInc ? 'var(--p-gossamer-green-ink)' : 'var(--p-marys-rose-ink)'};">${isInc ? '+' : '−'}${formatCurrency(tx.amount)}</span>
+                      <button onclick="deleteTx('${tx.id}')" class="icon-btn sm ghost danger">${iconSvg('<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>', 15)}</button>
+                    </div>
+                  </div>
+                `;
+              }).join('') : `<p class="muted" style="text-align:center; padding:26px 0;">За этот месяц операций пока нет.</p>`}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function shiftFinMonth(d) { const dt = new Date(ui.finYear, ui.finMonth + d, 1); ui.finYear = dt.getFullYear(); ui.finMonth = dt.getMonth(); renderView(); }
+    function addTxForm(e) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const amount = parseFloat(fd.get('amount'));
+      if (!amount || amount <= 0) return;
+      const dateStr = fd.get('date');
+      state.transactions.unshift({ id: uid('tx'), type: ui.finFormType, amount, category: fd.get('category'), date: dateStr, comment: fd.get('comment').trim() });
+      const d = parseDateStr(dateStr);
+      ui.finYear = d.getFullYear(); ui.finMonth = d.getMonth();
+      saveState(); renderView();
+      showToast(ui.finFormType === 'income' ? 'Доход записан' : 'Расход записан', ui.finFormType === 'income' ? 'var(--p-gossamer-green)' : 'var(--p-marys-rose)');
+    }
+    async function deleteTx(id) {
+      if (!(await askConfirm('Удалить операцию?', 'Запись исчезнет из истории финансов.'))) return;
+      state.transactions = state.transactions.filter(t => t.id !== id);
+      saveState(); renderView(); showToast('Операция удалена');
+    }
+
+    /* ==========================================================================
+       16. РАЗДЕЛ 10: НАСТРОЙКИ И МОДУЛИ
+       ========================================================================== */
+    function renderSettingsView() {
+      const themes = [
+        { id: 'powder', name: 'Пудровый голубой', desc: 'Powder Blue #C6D8F0 и Endless Sky', swatches: ['#C6D8F0', '#7D94B5', '#F4F3E8', '#F7D6DA'] },
+        { id: 'cream', name: 'Кремовая пена', desc: 'Тёплый Cappucino Foam и Pastel Yellow', swatches: ['#F4F3E8', '#F2E9B1', '#C6D8F0', '#B5D3BE'] },
+        { id: 'lavender', name: 'Нежная лаванда', desc: 'Orchid Petal и воздушный Heavenly Pink', swatches: ['#C5B7D1', '#F3E1E5', '#D2C1C8', '#7D94B5'] }
+      ];
+      const toggleable = MODULES_META.filter(m => !m.alwaysVisible);
+      const ideas = state.settings.moduleIdeas || [];
+
+      return `
+        <div class="view-enter stack" style="max-width: 900px;">
+          <div class="page-header">
+            <div>
+              <div class="eyebrow">Персонализация</div>
+              <h1 class="page-title">Настройки</h1>
+            </div>
+          </div>
+
+          <!-- 3 пастельные темы -->
+          <section class="card stack-sm">
+            <div>
+              <h2 class="section-title">Пастельная тема</h2>
+              <p class="text-sm muted">Выберите настроение фона вашего ежедневника</p>
+            </div>
+            <div class="grid-3">
+              ${themes.map(th => {
+                const active = state.settings.theme === th.id;
+                return `
+                  <button onclick="setTheme('${th.id}')" class="card" style="text-align:left; padding:16px; border: ${active ? '2px solid var(--accent)' : '1px solid var(--border)'}; background:#FFFFFF;">
+                    <div class="row" style="gap:6px; margin-bottom:12px;">
+                      ${th.swatches.map(hex => `<span class="pantone-swatch" style="background:${hex}; border-radius:50%;"></span>`).join('')}
+                    </div>
+                    <div style="font-size:20px; font-weight:700;">${th.name}</div>
+                    <div class="text-sm muted" style="margin-top:3px;">${th.desc}</div>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </section>
+
+          <!-- Иконка для рабочего стола телефона и полноэкранный режим -->
+          <section class="card stack-sm">
+            <div>
+              <h2 class="section-title">Иконка для экрана телефона</h2>
+              <p class="text-sm muted">Включён полноэкранный режим без строки браузера — выберите, как значок «Мой ритм» будет выглядеть на вашем рабочем столе</p>
+            </div>
+            <div class="row" style="gap: 24px; flex-wrap: wrap; align-items: center;">
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; padding:16px 22px; border-radius:20px; background:var(--bg-subtle); border:1px solid var(--border);">
+                <canvas id="icon-preview-canvas" width="240" height="240" style="width:104px; height:104px; border-radius:24px; box-shadow: 0 10px 26px rgba(67,86,117,0.22);"></canvas>
+                <span style="font-size:15px; font-weight:700; color:var(--ink-main);">Мой ритм</span>
+              </div>
+
+              <div style="flex:1; min-width:240px;" class="stack-sm">
+                <div class="pills-row">
+                  ${Object.values(ICON_STYLES).map(ic => {
+                    const active = (state.settings.iconStyle || 'powder') === ic.id;
+                    return `
+                      <button onclick="setIconStyle('${ic.id}')" class="pill-tab ${active ? 'active' : ''}">
+                        <span class="dot" style="background:${ic.themeHex}; border:1px solid rgba(38,48,64,0.18); width:11px; height:11px;"></span>
+                        <span>${ic.name}</span>
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+                <p class="text-sm muted">Иконка автоматически подхватится браузером при нажатии «Добавить на главный экран». Также вы можете скачать её в высоком качестве (512×512 PNG).</p>
+                <div>
+                  <button onclick="downloadAppIcon()" class="btn btn-secondary btn-sm">
+                    ${iconSvg('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>', 16)}
+                    <span>Скачать иконку (PNG)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Включение и выключение разделов -->
+          <section class="card stack-sm">
+            <div>
+              <h2 class="section-title">Разделы в меню</h2>
+              <p class="text-sm muted">Оставляйте в навигации только нужные вам модули</p>
+            </div>
+            <div class="grid-2">
+              ${toggleable.map(m => {
+                const on = isModuleEnabled(m.id);
+                return `
+                  <div class="row-between" style="padding:12px 14px; border-radius:14px; background:#FFFFFF; border:1px solid var(--border);">
+                    <div class="row" style="gap:10px;">
+                      ${iconSvg(m.icon, 18)}
+                      <span style="font-size:18px; font-weight:600;">${m.label}</span>
+                    </div>
+                    <button onclick="toggleModule('${m.id}')" class="toggle ${on ? 'on' : ''}" aria-label="${m.label}">
+                      <span class="toggle-knob"></span>
+                    </button>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+            <div class="divider"></div>
+            <div>
+              <div style="font-size:18px; font-weight:700; margin-bottom:8px;">Идеи для будущих разделов</div>
+              <form onsubmit="addModuleIdea(event)" class="row">
+                <input type="text" name="idea" class="input" placeholder="Например: Трекер ухода, План путешествий..." />
+                <button type="submit" class="btn btn-secondary btn-sm">Записать</button>
+              </form>
+              ${ideas.length ? `
+                <div class="pills-row" style="margin-top:12px;">
+                  ${ideas.map((idea, idx) => `
+                    <span class="badge" style="background:var(--p-cappucino-foam); border:1px solid var(--border); padding:5px 12px; font-size:16px;">
+                      ${esc(idea)}
+                      <button onclick="removeModuleIdea(${idx})" style="margin-left:6px; font-size:18px; color:var(--ink-muted);">×</button>
+                    </span>
+                  `).join('')}
+                </div>
+              ` : ''}
+            </div>
+          </section>
+
+          <!-- Экспорт / Импорт -->
+          <section class="card stack-sm">
+            <div>
+              <h2 class="section-title">Резервная копия данных</h2>
+              <p class="text-sm muted">Все ваши задачи, книги, цитаты, фильмы, заметки, цикл и финансы сохраняются локально и выгружаются одним файлом JSON.</p>
+            </div>
+            <div class="row" style="flex-wrap:wrap;">
+              <button onclick="exportBackupJSON()" class="btn btn-primary btn-sm">Скачать резервную копию (JSON)</button>
+              <button onclick="document.getElementById('json-import-input').click()" class="btn btn-secondary btn-sm">Загрузить из JSON</button>
+              <button onclick="restoreDemo()" class="btn btn-secondary btn-sm">Восстановить примеры</button>
+              <button onclick="clearAll()" class="btn btn-pastel-rose btn-sm">Очистить всё</button>
+            </div>
+          </section>
+        </div>
+      `;
+    }
+
+    function toggleModule(id) { state.settings.modules[id] = !isModuleEnabled(id); saveState(); renderAll(); }
+    function addModuleIdea(e) {
+      e.preventDefault();
+      const inp = e.target.querySelector('input[name="idea"]');
+      const val = inp.value.trim();
+      if (!val) return;
+      state.settings.moduleIdeas = state.settings.moduleIdeas || [];
+      state.settings.moduleIdeas.push(val);
+      saveState(); renderView(); showToast('Идея сохранена');
+    }
+    function removeModuleIdea(i) { state.settings.moduleIdeas.splice(i, 1); saveState(); renderView(); }
+
+    function exportBackupJSON() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `moi-ritm-pastel-${toDateStr()}.json`;
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      showToast('Резервная копия скачана', 'var(--p-gossamer-green)');
+    }
+
+    function handleImportFile(e) {
+      const file = e.target.files?.[0];
+      e.target.value = '';
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.tasks)) {
+            showToast('Неподходящий формат JSON', 'var(--p-marys-rose)'); return;
+          }
+          if (!(await askConfirm('Загрузить резервную копию?', 'Текущие данные будут заменены содержимым файла.', 'Загрузить'))) return;
+          const base = createEmptyState();
+          state = {
+            ...base, ...parsed,
+            settings: { ...base.settings, ...(parsed.settings || {}), modules: { ...base.settings.modules, ...(parsed.settings?.modules || {}) } },
+            cycle: { ...base.cycle, ...(parsed.cycle || {}) }
+          };
+          saveState(); renderAll(); showToast('Данные восстановлены', 'var(--p-gossamer-green)');
+        } catch { showToast('Ошибка чтения файла', 'var(--p-marys-rose)'); }
+      };
+      reader.readAsText(file);
+    }
+
+    async function restoreDemo() {
+      if (!(await askConfirm('Восстановить примеры?', 'Текущие записи будут заменены стартовыми примерами.', 'Восстановить'))) return;
+      const theme = state.settings.theme;
+      state = createDemoState(); state.settings.theme = theme;
+      saveState(); renderAll(); showToast('Примеры восстановлены');
+    }
+
+    async function clearAll() {
+      if (!(await askConfirm('Начать с чистого листа?', 'Все задачи, книги, фильмы, заметки, цикл и финансы будут очищены.', 'Очистить всё'))) return;
+      const theme = state.settings.theme, mods = { ...state.settings.modules };
+      state = createEmptyState(); state.settings.theme = theme; state.settings.modules = mods;
+      saveState(); renderAll(); showToast('Ежедневник очищен');
+    }
+
+    /* ==========================================================================
+       17. РЕНДЕРИНГ И ЗАПУСК
+       ========================================================================== */
+    function renderView() {
+      const el = document.getElementById('app-view');
+      switch (ui.route) {
+        case 'today': el.innerHTML = renderTodayView(); break;
+        case 'tasks': el.innerHTML = renderTasksView(); break;
+        case 'calendar': el.innerHTML = renderCalendarView(); break;
+        case 'habits': el.innerHTML = renderHabitsView(); break;
+        case 'movies': el.innerHTML = renderMoviesView(); break;
+        case 'books': el.innerHTML = renderBooksView(); break;
+        case 'notes': el.innerHTML = renderNotesView(); break;
+        case 'cycle': el.innerHTML = renderCycleView(); break;
+        case 'finance': el.innerHTML = renderFinanceView(); break;
+        case 'settings': el.innerHTML = renderSettingsView(); break;
+        default: el.innerHTML = renderTodayView();
+      }
+      if (ui.route === 'settings') renderIconPreviewCanvas();
+    }
+
+    function renderAll() {
+      applyAtmosphere();
+      renderNavigation();
+      renderView();
+    }
+
+    renderAll();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        applyPwaIconAndManifest();
+        renderIconPreviewCanvas();
+      });
+    }
+  </script>
+</body>
+</html>
+```
